@@ -41,7 +41,27 @@ class RegistrationController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        file_put_contents(public_path('debug.txt'), "Reached store!\n");
+        
+        // --- WORKAROUND UNTUK CACHE BROWSER ---
+        // Jika data kosong atau tidak lengkap dari frontend akibat cache JS lama, kita paksakan isi default.
+        $mergeData = [];
+        if (!$request->has('event_id')) {
+            $activeEvent = Event::where('status', 'active')->first();
+            if ($activeEvent) $mergeData['event_id'] = $activeEvent->id;
+        }
+        if (!$request->filled('scout_status')) {
+            $mergeData['scout_status'] = false;
+        }
+        if (!$request->filled('full_name')) {
+            $mergeData['full_name'] = Auth::user()->name ?? 'Tanpa Nama';
+        }
+        if (!empty($mergeData)) {
+            $request->merge($mergeData);
+        }
+
+        \Log::info('Store method reached! Payload: ', $request->all());
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'event_id' => 'required|exists:events,id',
             'full_name' => 'required|string|max:255',
             'identity_number' => 'required|string|max:50',
@@ -51,6 +71,11 @@ class RegistrationController extends Controller
             'phone' => 'required|string|max:20',
             'scout_status' => 'required|boolean',
         ]);
+
+        if ($validator->fails()) {
+            file_put_contents(public_path('debug.txt'), json_encode($validator->errors()->toArray()) . "\nRequest:\n" . json_encode($request->all()));
+            return back()->withErrors($validator)->withInput();
+        }
 
         $activeEvent = Event::where('id', $request->event_id)->where('status', 'active')->firstOrFail();
         $user = Auth::user();
@@ -90,7 +115,8 @@ class RegistrationController extends Controller
             return redirect()->route('user.dashboard')->with('success', 'Pendaftaran berhasil! Silakan lakukan pembayaran.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data pendaftaran.']);
+            \Log::error('Registration Error: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+            return back()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data pendaftaran. ' . $e->getMessage()]);
         }
     }
 
