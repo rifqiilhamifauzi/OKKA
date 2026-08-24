@@ -38,6 +38,7 @@
                             <th class="px-6 py-3 font-medium">Email</th>
                             <th class="px-6 py-3 font-medium">Peran</th>
                             <th class="px-6 py-3 font-medium">Bergabung Pada</th>
+                            <th class="px-6 py-3 font-medium text-right">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm text-blue-800 divide-y divide-slate-200">
@@ -55,9 +56,15 @@
                                 <span v-else class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">User</span>
                             </td>
                             <td class="px-6 py-4 text-stone-500">{{ new Date(user.created_at).toLocaleDateString('id-ID') }}</td>
+                            <td class="px-6 py-4 text-right">
+                                <button v-if="user.role !== 'admin'" @click="deleteUser(user.id)" class="text-red-600 hover:text-white font-medium bg-red-50 hover:bg-red-600 px-3 py-1 rounded border border-red-100 transition-colors">
+                                    Hapus
+                                </button>
+                                <span v-else class="text-stone-400 text-xs italic px-3 py-1">Tidak dapat dihapus</span>
+                            </td>
                         </tr>
                         <tr v-if="users.data.length === 0">
-                            <td colspan="4" class="px-6 py-12 text-center text-stone-500">
+                            <td colspan="5" class="px-6 py-12 text-center text-stone-500">
                                 Tidak ada data pengguna yang ditemukan.
                             </td>
                         </tr>
@@ -114,4 +121,20 @@ watch(() => filterForm.search, () => {
         applyFilters();
     }, 500);
 });
+
+const deleteUser = (id) => {
+    if (confirm('Apakah Anda yakin ingin menghapus data pengguna ini? Semua data pendaftaran terkait juga akan terhapus. Tindakan ini tidak dapat dibatalkan.')) {
+        router.delete(`/admin/users/${id}`, {
+            preserveScroll: true,
+            onSuccess: () => {
+                // Notifikasi sukses (bisa ditambahkan jika ada komponen toast)
+            },
+            onError: (errors) => {
+                if (errors.error) {
+                    alert(errors.error);
+                }
+            }
+        });
+    }
+};
 </script>

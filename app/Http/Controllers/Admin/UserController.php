@@ -32,4 +32,17 @@ class UserController extends Controller
             'filters' => $request->only(['search', 'role']),
         ]);
     }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+
+        if ($user->role === 'admin') {
+            return redirect()->back()->withErrors(['error' => 'Tidak dapat menghapus pengguna dengan peran Admin.']);
+        }
+
+        $user->delete();
+
+        return redirect()->back()->with('success', 'Pengguna berhasil dihapus.');
+    }
 }

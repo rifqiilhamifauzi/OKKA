@@ -52,6 +52,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     
     // Users
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     
     // Registrations
     Route::get('/registrations', [AdminRegistrationController::class, 'index'])->name('registrations.index');
