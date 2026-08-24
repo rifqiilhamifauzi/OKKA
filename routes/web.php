@@ -45,9 +45,13 @@ use App\Http\Controllers\Admin\RegistrationController as AdminRegistrationContro
 
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\AnnouncementController;
+use App\Http\Controllers\Admin\UserController;
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    
+    // Users
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
     
     // Registrations
     Route::get('/registrations', [AdminRegistrationController::class, 'index'])->name('registrations.index');
