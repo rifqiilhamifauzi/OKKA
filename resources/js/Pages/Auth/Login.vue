@@ -53,6 +53,21 @@
                     </div>
                 </div>
 
+                <!-- Developer Bypass Section -->
+                <div class="mt-6 border-t border-slate-100 pt-6">
+                    <h3 class="text-center text-xs font-semibold text-stone-400 uppercase tracking-wider mb-4">
+                        Opsi Login Cepat (Bypass)
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <a href="/auth/bypass?role=user" class="flex justify-center items-center py-2.5 px-4 border border-amber-200 rounded-lg shadow-sm bg-amber-50/50 text-sm font-medium text-amber-800 hover:bg-amber-100 hover:border-amber-300 transition-all duration-200 focus:outline-none">
+                            Masuk: Mahasiswa
+                        </a>
+                        <a href="/auth/bypass?role=admin" class="flex justify-center items-center py-2.5 px-4 border border-red-200 rounded-lg shadow-sm bg-red-50/50 text-sm font-medium text-red-800 hover:bg-red-100 hover:border-red-300 transition-all duration-200 focus:outline-none">
+                            Masuk: Admin
+                        </a>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

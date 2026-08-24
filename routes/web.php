@@ -24,6 +24,7 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
     Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
+    Route::get('/auth/bypass', [GoogleAuthController::class, 'bypass'])->name('auth.bypass');
 });
 
 use App\Http\Controllers\User\DashboardController;
