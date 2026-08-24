@@ -11,7 +11,6 @@
 
                 <div v-if="form.hasErrors" class="mb-6 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">
                     Mohon periksa kembali isian Anda. Ada beberapa data yang tidak valid.
-                    <pre class="mt-2 text-xs">{{ form.errors }}</pre>
                 </div>
 
                 <form @submit.prevent="submit">
@@ -99,13 +98,7 @@
                     </div>
                 </form>
 
-                <!-- Area Debug Log -->
-                <div v-if="debugLogs.length > 0" class="mt-8 p-4 bg-slate-900 rounded-md">
-                    <h3 class="text-sm font-bold text-white mb-2">Debug Log (Sistem)</h3>
-                    <ul class="text-xs text-green-400 font-mono space-y-1">
-                        <li v-for="(log, index) in debugLogs" :key="index">{{ log }}</li>
-                    </ul>
-                </div>
+
 
             </div>
         </div>
@@ -132,30 +125,10 @@ const form = useForm({
     scout_status: null,
 });
 
-import { ref } from 'vue';
-
-const debugLogs = ref([]);
-const addLog = (message) => {
-    debugLogs.value.push(new Date().toLocaleTimeString() + ' - ' + message);
-    console.log(message);
-};
-
 const submit = () => {
-    addLog('Tombol submit ditekan');
-    
-    form.transform((data) => {
-        const transformed = {
-            ...data,
-            event_id: props.activeEvent.id,
-        };
-        addLog('Data yang akan dikirim: ' + JSON.stringify(transformed));
-        return transformed;
-    }).post('/registration/store', {
-        onBefore: () => addLog('Memulai request ke /registration/store...'),
-        onStart: () => addLog('Request sedang berjalan...'),
-        onSuccess: (page) => addLog('Berhasil! Server merespon sukses.'),
-        onError: (errors) => addLog('Terjadi error validasi: ' + JSON.stringify(errors)),
-        onFinish: () => addLog('Request selesai diproses oleh server.'),
-    });
+    form.transform((data) => ({
+        ...data,
+        event_id: props.activeEvent.id,
+    })).post('/registration/store');
 };
 </script>

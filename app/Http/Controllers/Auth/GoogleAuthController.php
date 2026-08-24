@@ -70,41 +70,4 @@ class GoogleAuthController extends Controller
         }
     }
 
-    /**
-     * Bypass authentication for local development.
-     */
-    public function bypass(Request $request)
-    {
-        if (!app()->environment('local')) {
-            abort(403, 'Bypass is only allowed in local environment.');
-        }
-
-        $role = $request->query('role', 'user');
-
-        if ($role === 'admin') {
-            $user = User::updateOrCreate(
-                ['email' => 'admin@okka.ac.id'],
-                [
-                    'name' => 'Administrator OKKA (Bypass)',
-                    'google_id' => 'admin_dummy_id',
-                    'role' => 'admin',
-                    'email_verified_at' => now(),
-                ]
-            );
-            Auth::login($user, true);
-            return redirect()->route('admin.dashboard');
-        } else {
-            $user = User::updateOrCreate(
-                ['email' => 'student@okka.ac.id'],
-                [
-                    'name' => 'Mahasiswa Dummy (Bypass)',
-                    'google_id' => 'student_dummy_id',
-                    'role' => 'user',
-                    'email_verified_at' => now(),
-                ]
-            );
-            Auth::login($user, true);
-            return redirect()->route('user.dashboard');
-        }
-    }
 }

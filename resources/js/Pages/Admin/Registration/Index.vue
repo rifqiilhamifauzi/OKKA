@@ -60,8 +60,9 @@
                                 <span v-else class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-stone-800">{{ reg.status }}</span>
                             </td>
                             <td class="px-6 py-4 text-stone-500">{{ new Date(reg.created_at).toLocaleDateString('id-ID') }}</td>
-                            <td class="px-6 py-4 text-right">
+                            <td class="px-6 py-4 text-right flex justify-end gap-2">
                                 <a :href="`/admin/registrations/${reg.id}`" class="text-amber-600 hover:text-stone-800 font-medium bg-amber-50 px-3 py-1 rounded border border-amber-100">Detail</a>
+                                <button @click="deleteRegistration(reg.id)" class="text-red-600 hover:text-white font-medium bg-red-50 hover:bg-red-600 px-3 py-1 rounded border border-red-100 transition-colors">Hapus</button>
                             </td>
                         </tr>
                         <tr v-if="registrations.data.length === 0">
@@ -124,4 +125,15 @@ watch(() => filterForm.search, () => {
         applyFilters();
     }, 500);
 });
+
+const deleteRegistration = (id) => {
+    if (confirm('Apakah Anda yakin ingin menghapus data pendaftaran ini? Tindakan ini tidak dapat dibatalkan.')) {
+        router.delete(`/admin/registrations/${id}`, {
+            preserveScroll: true,
+            onSuccess: () => {
+                // Optionally show a notification here
+            }
+        });
+    }
+};
 </script>

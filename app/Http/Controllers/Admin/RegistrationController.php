@@ -69,4 +69,12 @@ class RegistrationController extends Controller
 
         return redirect()->back()->with('success', 'Status pendaftaran berhasil diperbarui.');
     }
+
+    public function destroy($id)
+    {
+        $registration = Registration::findOrFail($id);
+        $registration->delete();
+
+        return redirect()->route('admin.registrations.index')->with('success', 'Data pendaftaran berhasil dihapus.');
+    }
 }

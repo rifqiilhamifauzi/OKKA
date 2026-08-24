@@ -24,7 +24,6 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
     Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
-    Route::get('/auth/bypass', [GoogleAuthController::class, 'bypass'])->name('auth.bypass');
 });
 
 use App\Http\Controllers\User\DashboardController;
@@ -54,6 +53,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/registrations', [AdminRegistrationController::class, 'index'])->name('registrations.index');
     Route::get('/registrations/{id}', [AdminRegistrationController::class, 'show'])->name('registrations.show');
     Route::patch('/registrations/{id}/status', [AdminRegistrationController::class, 'updateStatus'])->name('registrations.update-status');
+    Route::delete('/registrations/{id}', [AdminRegistrationController::class, 'destroy'])->name('registrations.destroy');
 
     // Events
     Route::get('/events', [EventController::class, 'index'])->name('events.index');

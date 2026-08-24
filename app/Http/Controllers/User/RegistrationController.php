@@ -41,10 +41,7 @@ class RegistrationController extends Controller
 
     public function store(Request $request)
     {
-        file_put_contents(public_path('debug.txt'), "Reached store!\n");
-        
-        // --- WORKAROUND UNTUK CACHE BROWSER ---
-        // Jika data kosong atau tidak lengkap dari frontend akibat cache JS lama, kita paksakan isi default.
+        // --- WORKAROUND UNTUK CACHE BROWSER / FALLBACK ---
         $mergeData = [];
         if (!$request->has('event_id')) {
             $activeEvent = Event::where('status', 'active')->first();
@@ -60,7 +57,6 @@ class RegistrationController extends Controller
             $request->merge($mergeData);
         }
 
-        \Log::info('Store method reached! Payload: ', $request->all());
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'event_id' => 'required|exists:events,id',
             'full_name' => 'required|string|max:255',
