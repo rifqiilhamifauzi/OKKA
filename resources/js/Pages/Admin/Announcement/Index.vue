@@ -44,6 +44,12 @@
                                 <div ref="editor" contenteditable="true" class="w-full min-h-[150px] border border-slate-300 rounded-b-lg shadow-sm text-sm p-3 focus:outline-none focus:ring-1 focus:ring-amber-400 focus:border-amber-400 bg-white overflow-y-auto" @input="updateContent"></div>
                                 <div v-if="form.errors.content" class="text-red-500 text-xs mt-1">{{ form.errors.content }}</div>
                             </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-blue-800 mb-1">Gambar (Opsional)</label>
+                                <input type="file" @change="e => form.image = e.target.files[0]" accept="image/*" class="w-full text-sm text-stone-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                <div v-if="form.errors.image" class="text-red-500 text-xs mt-1">{{ form.errors.image }}</div>
+                            </div>
                             
                             <div class="flex items-center">
                                 <input v-model="form.is_published" id="is_published" type="checkbox" class="rounded border-slate-300 text-amber-500 focus:ring-amber-400">
@@ -98,6 +104,9 @@
                                         </button>
                                     </div>
                                 </div>
+                                <div v-if="announcement.image" class="mt-4 mb-2">
+                                    <img :src="'/storage/' + announcement.image" alt="Announcement Image" class="max-h-64 rounded-lg object-contain">
+                                </div>
                                 <div class="prose prose-sm prose-stone max-w-none mt-4 text-stone-600" v-html="announcement.content"></div>
                             </div>
                             
@@ -130,7 +139,8 @@ const form = useForm({
     title: '',
     content: '',
     visibility: 'global',
-    is_published: true
+    is_published: true,
+    image: null,
 });
 
 const formatText = (command) => {
@@ -183,7 +193,10 @@ const submitAnnouncement = () => {
     }
 
     if (isEditing.value) {
-        form.put(`/admin/announcements/${editingId.value}`, {
+        form.transform((data) => ({
+            ...data,
+            _method: 'put',
+        })).post(`/admin/announcements/${editingId.value}`, {
             preserveScroll: true,
             onSuccess: () => cancelEdit()
         });

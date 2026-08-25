@@ -50,6 +50,9 @@
                             <div v-for="announcement in $page.props.announcements" :key="announcement.id" class="border-b border-slate-100 pb-5 last:border-0 last:pb-0">
                                 <h4 class="font-bold text-stone-900 mb-1">{{ announcement.title }}</h4>
                                 <p class="text-xs text-stone-400 mb-3">{{ new Date(announcement.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) }}</p>
+                                <div v-if="announcement.image" class="mb-3">
+                                    <img :src="'/storage/' + announcement.image" alt="Announcement Image" class="w-full max-h-48 object-cover rounded-lg shadow-sm">
+                                </div>
                                 <div class="text-sm text-stone-600 prose prose-sm" v-html="announcement.content"></div>
                             </div>
                         </div>

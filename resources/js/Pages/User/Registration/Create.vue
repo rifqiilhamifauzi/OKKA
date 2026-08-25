@@ -63,6 +63,44 @@
                             </div>
                         </div>
 
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Fakultas -->
+                            <div>
+                                <label class="block text-sm font-medium text-blue-800">Fakultas</label>
+                                <input type="text" v-model="form.faculty" list="faculty-list" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Ketik atau pilih fakultas...">
+                                <datalist id="faculty-list">
+                                    <option v-for="faculty in faculties" :key="faculty" :value="faculty"></option>
+                                </datalist>
+                                <div v-if="form.errors.faculty" class="text-red-500 text-xs mt-1">{{ form.errors.faculty }}</div>
+                            </div>
+                            
+                            <!-- Jurusan -->
+                            <div>
+                                <label class="block text-sm font-medium text-blue-800">Jurusan</label>
+                                <input type="text" v-model="form.major" list="major-list" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Ketik atau pilih jurusan...">
+                                <datalist id="major-list">
+                                    <option v-for="major in majors" :key="major" :value="major"></option>
+                                </datalist>
+                                <div v-if="form.errors.major" class="text-red-500 text-xs mt-1">{{ form.errors.major }}</div>
+                            </div>
+                        </div>
+
+                        <!-- Ukuran Baju -->
+                        <div>
+                            <label class="block text-sm font-medium text-blue-800">Ukuran Baju</label>
+                            <select v-model="form.tshirt_size" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                                <option value="" disabled>Pilih ukuran baju</option>
+                                <option value="XS">XS</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                                <option value="XXL">XXL</option>
+                                <option value="XXXL">XXXL</option>
+                            </select>
+                            <div v-if="form.errors.tshirt_size" class="text-red-500 text-xs mt-1">{{ form.errors.tshirt_size }}</div>
+                        </div>
+
                         <!-- Nomor HP -->
                         <div>
                             <label class="block text-sm font-medium text-blue-800">Nomor HP / WhatsApp</label>
@@ -114,6 +152,72 @@ const props = defineProps({
     user: Object,
 });
 
+const faculties = [
+    'Fakultas Ushuluddin',
+    'Fakultas Tarbiyah dan Keguruan',
+    'Fakultas Syariah dan Hukum',
+    'Fakultas Dakwah dan Komunikasi',
+    'Fakultas Adab dan Humaniora',
+    'Fakultas Psikologi',
+    'Fakultas Sains dan Teknologi',
+    'Fakultas Ilmu Sosial dan Ilmu Politik',
+    'Fakultas Ekonomi dan Bisnis Islam'
+];
+
+const majors = [
+    'Aqidah dan Filsafat Islam',
+    'Studi Agama-Agama',
+    'Ilmu Al-Qur\'an dan Tafsir',
+    'Ilmu Hadits',
+    'Tasawuf dan Psikoterapi',
+    'Manajemen Pendidikan Islam',
+    'Pendidikan Agama Islam',
+    'Pendidikan Bahasa Arab',
+    'Pendidikan Bahasa Inggris',
+    'Pendidikan Matematika',
+    'Pendidikan Biologi',
+    'Pendidikan Fisika',
+    'Pendidikan Kimia',
+    'Pendidikan Guru Madrasah Ibtidaiyah',
+    'Pendidikan Islam Anak Usia Dini (PIAUD)',
+    'Tadris Bahasa Indonesia',
+    'Hukum Keluarga',
+    'Hukum Ekonomi Syari\'ah',
+    'Hukum Tata Negara',
+    'Perbandingan Mazhab dan Hukum',
+    'Ilmu Hukum',
+    'Hukum Pidana Islam',
+    'Bimbingan Konseling Islam',
+    'Komunikasi dan Penyiaran Islam',
+    'Manajemen Dakwah',
+    'Pengembangan Masyarakat Islam',
+    'Ilmu Komunikasi Jurnalistik',
+    'Ilmu Komunikasi Humas',
+    'Manajemen Haji dan Umrah',
+    'Sejarah Peradaban Islam',
+    'Bahasa dan Sastra Arab',
+    'Sastra Inggris',
+    'Ilmu Perpustakaan dan Informasi Islam',
+    'Psikologi',
+    'Matematika',
+    'Biologi',
+    'Fisika',
+    'Kimia',
+    'Teknik Informatika',
+    'Agroteknologi',
+    'Teknik Elektro',
+    'Teknik Lingkungan',
+    'Administrasi Publik',
+    'Sosiologi',
+    'Ilmu Politik',
+    'Akuntansi Syari\'ah',
+    'Ekonomi Syari\'ah',
+    'Manajemen Keuangan Syari\'ah',
+    'Manajemen',
+    'Manajemen Industri Halal',
+    'Bisnis Digital'
+];
+
 const form = useForm({
     event_id: props.activeEvent.id,
     full_name: props.user.name,
@@ -123,6 +227,9 @@ const form = useForm({
     birth_date: '',
     phone: '',
     scout_status: null,
+    faculty: '',
+    major: '',
+    tshirt_size: '',
 });
 
 const submit = () => {

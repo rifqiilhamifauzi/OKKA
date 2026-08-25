@@ -13,6 +13,7 @@ class Announcement extends Model
         'is_published',
         'visibility',
         'author_id',
+        'image',
     ];
 
     protected $casts = [

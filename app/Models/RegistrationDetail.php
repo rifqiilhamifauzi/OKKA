@@ -14,6 +14,9 @@ class RegistrationDetail extends Model
         'identity_number',
         'phone',
         'scout_status',
+        'faculty',
+        'major',
+        'tshirt_size',
     ];
 
     protected $casts = [

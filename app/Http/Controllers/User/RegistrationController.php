@@ -21,7 +21,10 @@ class RegistrationController extends Controller
             return redirect()->route('user.dashboard')->withErrors(['error' => 'Pilih event terlebih dahulu.']);
         }
 
-        $activeEvent = Event::where('id', $eventId)->where('status', 'active')->first();
+        $activeEvent = Event::where('id', $eventId)
+            ->where('status', 'active')
+            ->whereDate('end_date', '>=', now()->toDateString())
+            ->first();
         if (!$activeEvent) {
             return redirect()->route('user.dashboard')->withErrors(['error' => 'Event tidak ditemukan atau tidak aktif.']);
         }
@@ -44,7 +47,9 @@ class RegistrationController extends Controller
         // --- WORKAROUND UNTUK CACHE BROWSER / FALLBACK ---
         $mergeData = [];
         if (!$request->has('event_id')) {
-            $activeEvent = Event::where('status', 'active')->first();
+            $activeEvent = Event::where('status', 'active')
+                ->whereDate('end_date', '>=', now()->toDateString())
+                ->first();
             if ($activeEvent) $mergeData['event_id'] = $activeEvent->id;
         }
         if (!$request->filled('scout_status')) {
@@ -66,6 +71,9 @@ class RegistrationController extends Controller
             'birth_date' => 'required|date',
             'phone' => 'required|string|max:20',
             'scout_status' => 'required|boolean',
+            'faculty' => 'required|string|max:100',
+            'major' => 'required|string|max:100',
+            'tshirt_size' => 'required|in:S,M,L,XL,XXL,XXXL,XS',
         ]);
 
         if ($validator->fails()) {
@@ -73,7 +81,10 @@ class RegistrationController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        $activeEvent = Event::where('id', $request->event_id)->where('status', 'active')->firstOrFail();
+        $activeEvent = Event::where('id', $request->event_id)
+            ->where('status', 'active')
+            ->whereDate('end_date', '>=', now()->toDateString())
+            ->firstOrFail();
         $user = Auth::user();
 
         // Cek apakah sudah daftar
@@ -117,6 +128,9 @@ class RegistrationController extends Controller
                 'birth_date' => $request->birth_date,
                 'phone' => $request->phone,
                 'scout_status' => $request->scout_status,
+                'faculty' => $request->faculty,
+                'major' => $request->major,
+                'tshirt_size' => $request->tshirt_size,
             ]);
 
             DB::commit();

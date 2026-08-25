@@ -29,7 +29,13 @@ class PublicController extends Controller
 
     public function announcement()
     {
-        return Inertia::render('Public/Announcement');
+        $announcements = \App\Models\Announcement::where('is_published', true)
+            ->where('visibility', 'global')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return Inertia::render('Public/Announcement', [
+            'announcements' => $announcements
+        ]);
     }
 
     public function documentation()

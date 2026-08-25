@@ -25,7 +25,8 @@ class AnnouncementController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'visibility' => 'required|in:global,participants',
-            'is_published' => 'boolean'
+            'is_published' => 'boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $slug = Str::slug($request->title);
@@ -37,6 +38,11 @@ class AnnouncementController extends Controller
             $counter++;
         }
 
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('announcements', 'public');
+        }
+
         $announcement = Announcement::create([
             'title' => $request->title,
             'slug' => $slug,
@@ -44,6 +50,7 @@ class AnnouncementController extends Controller
             'visibility' => $request->visibility,
             'is_published' => $request->boolean('is_published'),
             'author_id' => Auth::id(),
+            'image' => $imagePath,
         ]);
 
         \App\Models\ActivityLog::create([
@@ -61,15 +68,25 @@ class AnnouncementController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'visibility' => 'required|in:global,participants',
-            'is_published' => 'boolean'
+            'is_published' => 'boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $announcement->update([
+        $data = [
             'title' => $request->title,
             'content' => $request->content,
             'visibility' => $request->visibility,
             'is_published' => $request->boolean('is_published'),
-        ]);
+        ];
+
+        if ($request->hasFile('image')) {
+            if ($announcement->image) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($announcement->image);
+            }
+            $data['image'] = $request->file('image')->store('announcements', 'public');
+        }
+
+        $announcement->update($data);
 
         \App\Models\ActivityLog::create([
             'user_id' => Auth::id(),
