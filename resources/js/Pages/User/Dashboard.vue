@@ -19,9 +19,9 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="space-y-6">
             <!-- Event Lists / Registrations -->
-            <div class="md:col-span-2 space-y-6">
+            <div class="space-y-6">
                 
                 <div v-if="$page.props.flash?.success" class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-md text-sm">
                     {{ $page.props.flash.success }}
@@ -62,22 +62,28 @@
                     
                     <!-- Sudah Daftar -->
                     <div v-else>
-                        <div class="flex flex-col sm:flex-row gap-4 mb-4 pt-4 border-t border-slate-100">
+                        <div class="mb-4 bg-slate-50 p-4 rounded-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border border-slate-100">
                             <div>
-                                <span class="block text-xs font-semibold text-stone-400 uppercase tracking-wider mb-1">Status</span>
-                                <span v-if="$page.props.registrations[event.id].status === 'pending'" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">Menunggu Pembayaran</span>
-                                <span v-else-if="$page.props.registrations[event.id].status === 'paid'" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800 border border-blue-200">Verifikasi</span>
-                                <span v-else-if="$page.props.registrations[event.id].status === 'approved'" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-amber-100">Lolos</span>
-                                <span v-else class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800 border border-red-200">{{ $page.props.registrations[event.id].status }}</span>
+                                <span class="block text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Status</span>
+                                <span v-if="$page.props.registrations[event.id].status === 'pending'" class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">Pending</span>
+                                <span v-else-if="$page.props.registrations[event.id].status === 'paid'" class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-800 border border-blue-200">Paid</span>
+                                <span v-else-if="$page.props.registrations[event.id].status === 'approved'" class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Approved</span>
+                                <span v-else class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-red-100 text-red-800 border border-red-200">Rejected</span>
                             </div>
-                            <div>
-                                <span class="block text-xs font-semibold text-stone-400 uppercase tracking-wider mb-1">Nomor Pendaftaran</span>
-                                <strong class="text-stone-800 text-sm font-mono">{{ $page.props.registrations[event.id].registration_number }}</strong>
+                            <div class="sm:text-right">
+                                <span class="block text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Nomor Pendaftaran</span>
+                                <strong class="text-stone-900 text-base font-mono bg-white px-2 py-1 rounded border border-slate-200 inline-block shadow-sm tracking-widest">{{ $page.props.registrations[event.id].registration_number }}</strong>
                             </div>
                         </div>
                         
-                        <!-- Form Pembayaran Pending -->
-                        <div v-if="$page.props.registrations[event.id].status === 'pending'" class="mt-4">
+                        <!-- Form Pembayaran Pending / Rejected -->
+                        <div v-if="['pending', 'rejected'].includes($page.props.registrations[event.id].status)" class="mt-4">
+                            
+                            <div v-if="$page.props.registrations[event.id].status === 'rejected'" class="mb-4 bg-red-50 border border-red-200 rounded-lg p-4">
+                                <h4 class="font-bold text-red-800 text-sm mb-1">Pembayaran Ditolak</h4>
+                                <p class="text-sm text-red-800">Bukti pembayaran Anda sebelumnya ditolak. Silakan unggah ulang bukti pembayaran yang benar.</p>
+                            </div>
+
                             <button v-if="activePaymentEventId !== event.id" @click="activePaymentEventId = event.id" class="w-full bg-amber-500 hover:bg-amber-600 text-stone-900 px-4 py-2 rounded font-bold text-sm transition shadow-sm">
                                 Lanjut ke Pembayaran
                             </button>
@@ -106,7 +112,7 @@
                                         <div v-if="paymentForm.errors.payment_proof" class="text-red-500 text-xs mt-1">{{ paymentForm.errors.payment_proof }}</div>
                                     </div>
                                     
-                                    <button type="submit" :disabled="paymentForm.processing" class="w-full inline-flex justify-center items-center bg-amber-500-blue-950 px-4 py-2 rounded font-bold text-sm transition shadow-sm">
+                                    <button type="submit" :disabled="paymentForm.processing" class="w-full inline-flex justify-center items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-bold text-sm transition shadow-sm">
                                         <svg v-if="paymentForm.processing" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -119,8 +125,8 @@
 
                         <!-- Status Paid -->
                         <div v-if="$page.props.registrations[event.id].status === 'paid'" class="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                            <h4 class="font-bold text-blue-800 text-sm mb-1">Sedang Diverifikasi</h4>
-                            <p class="text-sm text-blue-800">Pembayaran Anda sedang kami periksa. Mohon tunggu maksimal 1x24 jam.</p>
+                            <h4 class="font-bold text-blue-800 text-sm mb-1">Menunggu Keputusan</h4>
+                            <p class="text-sm text-blue-800">Pembayaran Anda sedang kami periksa. Mohon tunggu maksimal 1x24 jam untuk Approve/Reject.</p>
                         </div>
 
                         <!-- Status Approved -->
@@ -131,37 +137,12 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Announcements Sidebar -->
-            <div class="space-y-6">
-                <div class="bg-white p-6 shadow-sm sm:rounded-lg border border-slate-200">
-                    <h3 class="text-lg font-bold text-stone-800 font-plus-jakarta-sans mb-4 flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path></svg>
-                        Pengumuman
-                    </h3>
-                    
-                    <div class="space-y-4">
-                        <div v-for="announcement in $page.props.announcements" :key="announcement.id" class="border-b border-slate-100 pb-4 last:border-0 last:pb-0">
-                            <h4 class="font-bold text-stone-900 text-sm">{{ announcement.title }}</h4>
-                            <div class="text-xs text-stone-400 mt-1 mb-2">
-                                {{ new Date(announcement.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'}) }}
-                            </div>
-                            <div class="prose prose-sm prose-stone text-stone-600" v-html="announcement.content"></div>
-                        </div>
-
-                        <div v-if="$page.props.announcements.length === 0" class="text-stone-500 text-sm italic text-center py-4 bg-slate-50 rounded-lg border border-slate-100">
-                            Belum ada pengumuman terbaru.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white p-6 shadow-sm sm:rounded-lg border border-slate-200">
-                    <form @submit.prevent="logout">
-                        <button type="submit" class="w-full text-red-600 hover:text-red-800 text-sm font-medium transition py-2 hover:bg-red-50 rounded-lg">
-                            Keluar dari sistem
-                        </button>
-                    </form>
-                </div>
+            <div class="bg-white p-6 shadow-sm sm:rounded-lg border border-slate-200">
+                <form @submit.prevent="logout">
+                    <button type="submit" class="w-full text-red-600 hover:text-red-800 text-sm font-medium transition py-2 hover:bg-red-50 rounded-lg">
+                        Keluar dari sistem
+                    </button>
+                </form>
             </div>
         </div>
     </UserLayout>

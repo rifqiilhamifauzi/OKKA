@@ -41,7 +41,14 @@ class UserController extends Controller
             return redirect()->back()->withErrors(['error' => 'Tidak dapat menghapus pengguna dengan peran Admin.']);
         }
 
+        $name = $user->name;
         $user->delete();
+
+        \App\Models\ActivityLog::create([
+            'user_id' => \Illuminate\Support\Facades\Auth::id(),
+            'action' => 'Delete User',
+            'description' => 'Menghapus akun pengguna: ' . $name,
+        ]);
 
         return redirect()->back()->with('success', 'Pengguna berhasil dihapus.');
     }

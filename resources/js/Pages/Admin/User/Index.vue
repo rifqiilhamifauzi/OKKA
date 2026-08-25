@@ -93,6 +93,8 @@ import { Head, router } from '@inertiajs/vue3';
 import { reactive, watch } from 'vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 
+import { onMounted, onUnmounted } from 'vue';
+
 const props = defineProps({
     users: Object,
     filters: Object,
@@ -120,6 +122,19 @@ watch(() => filterForm.search, () => {
     searchTimeout = setTimeout(() => {
         applyFilters();
     }, 500);
+});
+
+let interval = null;
+
+onMounted(() => {
+    // Live update every 10 seconds, only refreshing the 'users' prop
+    interval = setInterval(() => {
+        router.reload({ only: ['users'], preserveScroll: true, preserveState: true });
+    }, 10000);
+});
+
+onUnmounted(() => {
+    if (interval) clearInterval(interval);
 });
 
 const deleteUser = (id) => {

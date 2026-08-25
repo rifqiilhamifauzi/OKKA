@@ -25,25 +25,9 @@ class DashboardController extends Controller
                                  ->get()
                                  ->keyBy('event_id');
 
-        // Fetch announcements
-        $isParticipant = $user->registrations()->where('status', 'approved')->exists();
-        
-        $announcementsQuery = Announcement::where('is_published', true)->orderBy('created_at', 'desc');
-        
-        if ($isParticipant) {
-            // Can see both global and participants announcements
-            $announcementsQuery->whereIn('visibility', ['global', 'participants']);
-        } else {
-            // Can only see global announcements
-            $announcementsQuery->where('visibility', 'global');
-        }
-        
-        $announcements = $announcementsQuery->get();
-
         return Inertia::render('User/Dashboard', [
             'activeEvents' => $activeEvents,
-            'registrations' => $registrations,
-            'announcements' => $announcements
+            'registrations' => $registrations
         ]);
     }
 }

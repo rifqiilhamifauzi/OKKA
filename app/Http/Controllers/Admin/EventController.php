@@ -38,7 +38,7 @@ class EventController extends Controller
             $counter++;
         }
 
-        Event::create([
+        $event = Event::create([
             'name' => $request->name,
             'slug' => $slug,
             'description' => $request->description,
@@ -46,6 +46,12 @@ class EventController extends Controller
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'status' => 'draft', // By default draft
+        ]);
+
+        \App\Models\ActivityLog::create([
+            'user_id' => \Illuminate\Support\Facades\Auth::id(),
+            'action' => 'Create Event',
+            'description' => 'Membuat event baru: ' . $event->name,
         ]);
 
         return redirect()->back()->with('success', 'Event berhasil dibuat.');
@@ -58,6 +64,12 @@ class EventController extends Controller
         ]);
 
         $event->update(['status' => $request->status]);
+
+        \App\Models\ActivityLog::create([
+            'user_id' => \Illuminate\Support\Facades\Auth::id(),
+            'action' => 'Update Event Status',
+            'description' => 'Mengubah status event "' . $event->name . '" menjadi ' . $request->status,
+        ]);
 
         return redirect()->back()->with('success', 'Status event berhasil diperbarui.');
     }
@@ -92,6 +104,12 @@ class EventController extends Controller
             'end_date' => $request->end_date,
         ]);
 
+        \App\Models\ActivityLog::create([
+            'user_id' => \Illuminate\Support\Facades\Auth::id(),
+            'action' => 'Update Event',
+            'description' => 'Memperbarui data event: ' . $event->name,
+        ]);
+
         return redirect()->back()->with('success', 'Event berhasil diperbarui.');
     }
 
@@ -102,7 +120,14 @@ class EventController extends Controller
             return redirect()->back()->withErrors(['error' => 'Tidak dapat menghapus event karena sudah ada pendaftar.']);
         }
 
+        $eventName = $event->name;
         $event->delete();
+
+        \App\Models\ActivityLog::create([
+            'user_id' => \Illuminate\Support\Facades\Auth::id(),
+            'action' => 'Delete Event',
+            'description' => 'Menghapus event: ' . $eventName,
+        ]);
 
         return redirect()->back()->with('success', 'Event berhasil dihapus.');
     }

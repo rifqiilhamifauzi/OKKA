@@ -10,10 +10,16 @@ use App\Models\Registration;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $activeEvent = Event::where('status', 'active')->orderBy('created_at', 'desc')->first();
-        
+        $events = Event::orderBy('created_at', 'desc')->get();
+        $eventId = $request->query('event_id');
+
+        $activeEvent = null;
+        if ($eventId && $eventId !== 'all') {
+            $activeEvent = $events->firstWhere('id', $eventId);
+        }
+
         $metrics = [
             'total' => 0,
             'pending' => 0,
@@ -21,27 +27,33 @@ class DashboardController extends Controller
             'approved' => 0,
         ];
 
-        $recentRegistrations = collect([]);
-
+        $query = Registration::with('user', 'detail', 'event');
+        
         if ($activeEvent) {
-            $registrations = Registration::where('event_id', $activeEvent->id)->get();
-            
-            $metrics['total'] = $registrations->count();
-            $metrics['pending'] = $registrations->where('status', 'pending')->count();
-            $metrics['paid'] = $registrations->where('status', 'paid')->count();
-            $metrics['approved'] = $registrations->where('status', 'approved')->count();
-
-            $recentRegistrations = Registration::with('user', 'detail')
-                ->where('event_id', $activeEvent->id)
-                ->orderBy('created_at', 'desc')
-                ->take(5)
-                ->get();
+            $query->where('event_id', $activeEvent->id);
         }
 
+        $allRegistrations = $query->get();
+        
+        $metrics['total'] = $allRegistrations->count();
+        $metrics['pending'] = $allRegistrations->where('status', 'pending')->count();
+        $metrics['paid'] = $allRegistrations->where('status', 'paid')->count();
+        $metrics['approved'] = $allRegistrations->where('status', 'approved')->count();
+
+        $recentRegistrations = Registration::with('user', 'detail', 'event')
+            ->when($activeEvent, function($q) use ($activeEvent) {
+                return $q->where('event_id', $activeEvent->id);
+            })
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
         return Inertia::render('Admin/Dashboard', [
+            'events' => $events,
             'activeEvent' => $activeEvent,
             'metrics' => $metrics,
             'recentRegistrations' => $recentRegistrations,
+            'filters' => ['event_id' => $eventId ?? 'all'],
         ]);
     }
 }

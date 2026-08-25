@@ -2,15 +2,27 @@
     <Head title="Admin Dashboard - OKKA" />
 
     <AdminLayout>
-        <div class="mb-6 flex justify-between items-end">
+        <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
             <div>
                 <h2 class="text-2xl font-bold text-stone-800 font-plus-jakarta-sans">Ikhtisar Pendaftaran</h2>
-                <p class="text-stone-600 text-sm mt-1">Data terkini untuk event: <strong>{{ activeEvent ? activeEvent.name : 'Tidak ada event aktif' }}</strong></p>
+                <p class="text-stone-600 text-sm mt-1">
+                    Data terkini untuk event: <strong>{{ activeEvent ? activeEvent.name : 'Semua Event Aktif' }}</strong>
+                </p>
+            </div>
+            
+            <!-- Event Filter -->
+            <div class="w-full sm:w-64">
+                <select v-model="filterForm.event_id" @change="applyFilters" class="block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    <option value="all">Semua Event Aktif</option>
+                    <option v-for="event in events" :key="event.id" :value="event.id">
+                        {{ event.name }}
+                    </option>
+                </select>
             </div>
         </div>
 
-        <div v-if="!activeEvent" class="bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-md mb-6">
-            Peringatan: Tidak ada event yang berstatus aktif saat ini.
+        <div v-if="!events || events.length === 0" class="bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-md mb-6">
+            Peringatan: Tidak ada event yang terdaftar saat ini.
         </div>
         
         <div v-else>
@@ -110,12 +122,44 @@
 </template>
 
 <script setup>
-import { Head } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
+import { onMounted, onUnmounted, reactive } from 'vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 
-defineProps({
+const props = defineProps({
+    events: Array,
     activeEvent: Object,
     metrics: Object,
     recentRegistrations: Array,
+    filters: Object,
+});
+
+const filterForm = reactive({
+    event_id: props.filters?.event_id || 'all',
+});
+
+const applyFilters = () => {
+    let params = {};
+    if (filterForm.event_id && filterForm.event_id !== 'all') {
+        params.event_id = filterForm.event_id;
+    }
+
+    router.get('/admin/dashboard', params, {
+        preserveState: true,
+        replace: true,
+    });
+};
+
+let interval = null;
+
+onMounted(() => {
+    // Live update every 10 seconds
+    interval = setInterval(() => {
+        router.reload({ only: ['metrics', 'recentRegistrations'], preserveScroll: true, preserveState: true });
+    }, 10000);
+});
+
+onUnmounted(() => {
+    if (interval) clearInterval(interval);
 });
 </script>

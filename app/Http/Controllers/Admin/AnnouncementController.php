@@ -37,13 +37,19 @@ class AnnouncementController extends Controller
             $counter++;
         }
 
-        Announcement::create([
+        $announcement = Announcement::create([
             'title' => $request->title,
             'slug' => $slug,
             'content' => $request->content,
             'visibility' => $request->visibility,
             'is_published' => $request->boolean('is_published'),
             'author_id' => Auth::id(),
+        ]);
+
+        \App\Models\ActivityLog::create([
+            'user_id' => Auth::id(),
+            'action' => 'Create Announcement',
+            'description' => 'Membuat pengumuman baru: ' . $announcement->title,
         ]);
 
         return redirect()->back()->with('success', 'Pengumuman berhasil dibuat.');
@@ -65,12 +71,26 @@ class AnnouncementController extends Controller
             'is_published' => $request->boolean('is_published'),
         ]);
 
+        \App\Models\ActivityLog::create([
+            'user_id' => Auth::id(),
+            'action' => 'Update Announcement',
+            'description' => 'Memperbarui pengumuman: ' . $announcement->title,
+        ]);
+
         return redirect()->back()->with('success', 'Pengumuman berhasil diperbarui.');
     }
 
     public function destroy(Announcement $announcement)
     {
+        $title = $announcement->title;
         $announcement->delete();
+
+        \App\Models\ActivityLog::create([
+            'user_id' => Auth::id(),
+            'action' => 'Delete Announcement',
+            'description' => 'Menghapus pengumuman: ' . $title,
+        ]);
+
         return redirect()->back()->with('success', 'Pengumuman berhasil dihapus.');
     }
 }

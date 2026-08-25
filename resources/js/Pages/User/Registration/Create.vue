@@ -1,11 +1,11 @@
 <template>
-    <Head title="Pendaftaran OKKA" />
+    <Head :title="`Pendaftaran ${activeEvent.name}`" />
 
     <UserLayout>
         <div class="max-w-3xl mx-auto">
             <div class="bg-white p-8 shadow-sm sm:rounded-lg border border-slate-200">
                 <div class="mb-8 border-b border-slate-200 pb-4">
-                    <h2 class="text-2xl font-bold text-stone-900 font-plus-jakarta-sans">Form Pendaftaran OKKA</h2>
+                    <h2 class="text-2xl font-bold text-stone-900 font-plus-jakarta-sans">Form Pendaftaran {{ activeEvent.name }}</h2>
                     <p class="text-stone-600 mt-1">Lengkapi data di bawah ini untuk mendaftar pada {{ activeEvent.name }}.</p>
                 </div>
 

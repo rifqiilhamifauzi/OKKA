@@ -86,8 +86,21 @@ class RegistrationController extends Controller
             // Update User's full name
             $user->update(['name' => $request->full_name]);
 
+            // Generate Event Acronym for Registration Number Prefix
+            $words = explode(' ', preg_replace('/[^A-Za-z0-9 ]/', '', $activeEvent->name));
+            $acronym = '';
+            foreach ($words as $w) {
+                if (!empty($w) && !is_numeric($w)) {
+                    $acronym .= strtoupper($w[0]);
+                }
+            }
+            $prefix = substr($acronym, 0, 4);
+            if (strlen($prefix) < 2) {
+                $prefix = substr(strtoupper(preg_replace('/[^A-Za-z]/', '', $activeEvent->name)), 0, 4) ?: 'REG';
+            }
+
             // Generate Registration Number
-            $regNumber = 'OKKA' . date('y') . strtoupper(Str::random(6));
+            $regNumber = $prefix . date('y') . strtoupper(Str::random(6));
 
             $registration = Registration::create([
                 'user_id' => $user->id,
@@ -127,7 +140,7 @@ class RegistrationController extends Controller
         
         $registration = $user->registrations()->where('event_id', $request->event_id)->firstOrFail();
 
-        if ($registration->status !== 'pending') {
+        if (!in_array($registration->status, ['pending', 'rejected'])) {
             return back()->withErrors(['error' => 'Status pendaftaran tidak valid untuk unggah pembayaran.']);
         }
 

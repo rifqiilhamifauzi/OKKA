@@ -12,12 +12,19 @@ class RegistrationController extends Controller
 {
     public function index(Request $request)
     {
-        $activeEvent = Event::where('status', 'active')->orderBy('created_at', 'desc')->first();
+        $events = Event::orderBy('created_at', 'desc')->get();
+        $eventId = $request->query('event_id');
+
+        $activeEvent = null;
+        if ($eventId && $eventId !== 'all') {
+            $activeEvent = $events->firstWhere('id', $eventId);
+        }
         
-        $query = Registration::with('user', 'detail')
-            ->when($activeEvent, function($q) use ($activeEvent) {
-                return $q->where('event_id', $activeEvent->id);
-            });
+        $query = Registration::with('user', 'detail', 'event');
+        
+        if ($activeEvent) {
+            $query->where('event_id', $activeEvent->id);
+        }
 
         // Searching
         if ($request->has('search') && $request->search != '') {
@@ -43,7 +50,8 @@ class RegistrationController extends Controller
 
         return Inertia::render('Admin/Registration/Index', [
             'registrations' => $registrations,
-            'filters' => $request->only(['search', 'status']),
+            'filters' => array_merge($request->only(['search', 'status']), ['event_id' => $eventId ?? 'all']),
+            'events' => $events,
             'activeEvent' => $activeEvent,
         ]);
     }
@@ -63,17 +71,30 @@ class RegistrationController extends Controller
             'status' => 'required|in:pending,paid,approved,rejected',
         ]);
 
-        $registration = Registration::findOrFail($id);
+        $registration = Registration::with('user')->findOrFail($id);
         $registration->status = $request->status;
         $registration->save();
+
+        \App\Models\ActivityLog::create([
+            'user_id' => \Illuminate\Support\Facades\Auth::id(),
+            'action' => 'Update Registration Status',
+            'description' => 'Mengubah status pendaftaran ' . $registration->user->name . ' menjadi ' . $request->status,
+        ]);
 
         return redirect()->back()->with('success', 'Status pendaftaran berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
-        $registration = Registration::findOrFail($id);
+        $registration = Registration::with('user')->findOrFail($id);
+        $name = $registration->user->name;
         $registration->delete();
+
+        \App\Models\ActivityLog::create([
+            'user_id' => \Illuminate\Support\Facades\Auth::id(),
+            'action' => 'Delete Registration',
+            'description' => 'Menghapus pendaftaran peserta: ' . $name,
+        ]);
 
         return redirect()->route('admin.registrations.index')->with('success', 'Data pendaftaran berhasil dihapus.');
     }

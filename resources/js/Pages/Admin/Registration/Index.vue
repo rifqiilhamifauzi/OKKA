@@ -13,6 +13,12 @@
             <!-- Filter & Search Bar -->
             <div class="p-4 border-b border-slate-200 bg-slate-50 flex flex-col sm:flex-row justify-between items-center gap-4">
                 <div class="flex gap-2 w-full sm:w-auto">
+                    <select v-model="filterForm.event_id" @change="applyFilters" class="block w-full sm:w-48 rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                        <option value="all">Semua Event Aktif</option>
+                        <option v-for="event in events" :key="event.id" :value="event.id">
+                            {{ event.name }}
+                        </option>
+                    </select>
                     <select v-model="filterForm.status" @change="applyFilters" class="block w-full sm:w-48 rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                         <option value="all">Semua Status</option>
                         <option value="pending">Pending</option>
@@ -37,6 +43,7 @@
                     <thead>
                         <tr class="bg-white text-stone-500 text-sm uppercase tracking-wider border-b border-slate-200">
                             <th class="px-6 py-3 font-medium">No. Daftar</th>
+                            <th class="px-6 py-3 font-medium">Nama Event</th>
                             <th class="px-6 py-3 font-medium">Peserta</th>
                             <th class="px-6 py-3 font-medium">NIM</th>
                             <th class="px-6 py-3 font-medium">Status</th>
@@ -47,6 +54,11 @@
                     <tbody class="text-sm text-blue-800 divide-y divide-slate-200">
                         <tr v-for="reg in registrations.data" :key="reg.id" class="hover:bg-slate-50 transition">
                             <td class="px-6 py-4 font-medium text-stone-900">{{ reg.registration_number }}</td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-800 border border-blue-100">
+                                    {{ reg.event ? reg.event.name : '-' }}
+                                </span>
+                            </td>
                             <td class="px-6 py-4">
                                 <div class="font-medium text-stone-900">{{ reg.user.name }}</div>
                                 <div class="text-stone-500 text-xs">{{ reg.user.email }}</div>
@@ -95,21 +107,26 @@ import { Head, router } from '@inertiajs/vue3';
 import { reactive, watch } from 'vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 
+import { onMounted, onUnmounted } from 'vue';
+
 const props = defineProps({
     registrations: Object,
     filters: Object,
     activeEvent: Object,
+    events: Array,
 });
 
 const filterForm = reactive({
     search: props.filters.search || '',
     status: props.filters.status || 'all',
+    event_id: props.filters.event_id || 'all',
 });
 
 const applyFilters = () => {
     let params = {};
     if (filterForm.search) params.search = filterForm.search;
     if (filterForm.status && filterForm.status !== 'all') params.status = filterForm.status;
+    if (filterForm.event_id && filterForm.event_id !== 'all') params.event_id = filterForm.event_id;
 
     router.get('/admin/registrations', params, {
         preserveState: true,
@@ -124,6 +141,19 @@ watch(() => filterForm.search, () => {
     searchTimeout = setTimeout(() => {
         applyFilters();
     }, 500);
+});
+
+let interval = null;
+
+onMounted(() => {
+    // Live update every 10 seconds, only refreshing the 'registrations' prop
+    interval = setInterval(() => {
+        router.reload({ only: ['registrations'], preserveScroll: true, preserveState: true });
+    }, 10000);
+});
+
+onUnmounted(() => {
+    if (interval) clearInterval(interval);
 });
 
 const deleteRegistration = (id) => {

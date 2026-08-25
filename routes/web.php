@@ -46,6 +46,7 @@ use App\Http\Controllers\Admin\RegistrationController as AdminRegistrationContro
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\ActivityLogController;
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
@@ -72,4 +73,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/announcements', [AnnouncementController::class, 'store'])->name('announcements.store');
     Route::put('/announcements/{announcement}', [AnnouncementController::class, 'update'])->name('announcements.update');
     Route::delete('/announcements/{announcement}', [AnnouncementController::class, 'destroy'])->name('announcements.destroy');
+
+    // Activity Logs
+    Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
+
+    // Finances
+    Route::get('/finances', [\App\Http\Controllers\Admin\FinanceController::class, 'index'])->name('finances.index');
+    Route::get('/finances/export', [\App\Http\Controllers\Admin\FinanceController::class, 'export'])->name('finances.export');
 });
