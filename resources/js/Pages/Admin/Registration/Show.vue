@@ -128,6 +128,24 @@
                                 </dd>
                             </div>
 
+                            <!-- Fakultas -->
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                <dt class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Fakultas</dt>
+                                <dd class="text-stone-900 font-medium">{{ registration.detail.faculty || '-' }}</dd>
+                            </div>
+
+                            <!-- Jurusan -->
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                <dt class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Jurusan</dt>
+                                <dd class="text-stone-900 font-medium">{{ registration.detail.major || '-' }}</dd>
+                            </div>
+
+                            <!-- Ukuran Baju -->
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                <dt class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Ukuran Baju</dt>
+                                <dd class="text-stone-900 font-medium font-bold text-amber-600">{{ registration.detail.tshirt_size || '-' }}</dd>
+                            </div>
+
                             <!-- HP -->
                             <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
                                 <dt class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Nomor HP / WhatsApp</dt>
