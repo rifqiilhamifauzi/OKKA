@@ -2,25 +2,56 @@
     <Head title="Dashboard - OKKA" />
 
     <UserLayout>
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
-            <div class="p-6 bg-white border-b border-slate-200">
-                <div class="flex items-center">
-                    <img v-if="$page.props.auth.user.avatar" :src="$page.props.auth.user.avatar" alt="Avatar" class="h-12 w-12 rounded-full mr-4">
-                    <div v-else class="h-12 w-12 rounded-full bg-amber-600 text-white flex items-center justify-center text-xl font-bold mr-4">
-                        {{ $page.props.auth.user.name.charAt(0) }}
-                    </div>
-                    <div>
-                        <h2 class="text-xl font-bold text-stone-800 font-plus-jakarta-sans">
-                            Halo, {{ $page.props.auth.user.name }}!
+        <div class="flex flex-col lg:flex-row gap-6 items-start">
+            
+            <!-- Left Column: Profile Card -->
+            <div class="w-full lg:w-1/3 xl:w-1/4">
+                <div class="bg-white shadow-sm rounded-xl border border-slate-200 overflow-hidden sticky top-6">
+                    <div class="p-6 text-center border-b border-slate-100 bg-gradient-to-b from-slate-50 to-white">
+                        <img v-if="$page.props.auth.user.avatar" :src="$page.props.auth.user.avatar" alt="Avatar" class="h-28 w-28 mx-auto rounded-full shadow-md object-cover border-4 border-white mb-4">
+                        <div v-else class="h-28 w-28 mx-auto rounded-full bg-gradient-to-br from-amber-500 to-amber-600 text-white flex items-center justify-center text-5xl font-bold shadow-md border-4 border-white mb-4">
+                            {{ $page.props.auth.user.name.charAt(0) }}
+                        </div>
+                        <h2 class="text-lg font-bold text-stone-800 font-plus-jakarta-sans mb-1 leading-tight">
+                            {{ $page.props.auth.user.name }}
                         </h2>
-                        <p class="text-stone-600 text-sm">Selamat datang di Dashboard OKKA.</p>
+                        <p class="text-stone-500 text-xs">{{ $page.props.auth.user.email }}</p>
                     </div>
+                    
+                    <div v-if="latestDetail" class="p-5 space-y-4">
+                        <div>
+                            <span class="block text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1 flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path></svg>
+                                NIM / ID
+                            </span>
+                            <span class="text-stone-800 font-semibold text-sm">{{ latestDetail.identity_number || '-' }}</span>
+                        </div>
+                        <div class="w-full h-px bg-slate-100"></div>
+                        <div>
+                            <span class="block text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1 flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                Fakultas
+                            </span>
+                            <span class="text-stone-800 font-semibold text-sm">{{ latestDetail.faculty || '-' }}</span>
+                        </div>
+                        <div class="w-full h-px bg-slate-100"></div>
+                        <div>
+                            <span class="block text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1 flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                                Jurusan
+                            </span>
+                            <span class="text-stone-800 font-semibold text-sm">{{ latestDetail.major || '-' }}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Profile Card End -->
                 </div>
             </div>
-        </div>
 
-        <div class="space-y-6">
-            <!-- Event Lists / Registrations -->
+            <!-- Right Column: Content -->
+            <div class="w-full lg:w-2/3 xl:w-3/4 space-y-6">
+                
+                <!-- Event Lists / Registrations -->
             <div class="space-y-6">
                 
                 <div v-if="$page.props.flash?.success" class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-md text-sm">
@@ -137,21 +168,22 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-white p-6 shadow-sm sm:rounded-lg border border-slate-200">
-                <form @submit.prevent="logout">
-                    <button type="submit" class="w-full text-red-600 hover:text-red-800 text-sm font-medium transition py-2 hover:bg-red-50 rounded-lg">
-                        Keluar dari sistem
-                    </button>
-                </form>
-            </div>
-        </div>
+            </div> <!-- Close Right Column -->
+        </div> <!-- Close Main Flex Container -->
     </UserLayout>
 </template>
 
 <script setup>
-import { Head, useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
 import UserLayout from '@/Layouts/UserLayout.vue';
+
+const page = usePage();
+
+const latestDetail = computed(() => {
+    const regs = Object.values(page.props.registrations || {});
+    return regs.length > 0 ? regs[0].detail : null;
+});
 
 const form = useForm({});
 const paymentForm = useForm({

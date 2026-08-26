@@ -16,7 +16,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         
-        $userRegistrations = Registration::where('user_id', $user->id)->get();
+        $userRegistrations = Registration::with('detail')->where('user_id', $user->id)->get();
         $registeredEventIds = $userRegistrations->pluck('event_id');
 
         // Fetch ALL active events that are either still open OR the user has already registered
