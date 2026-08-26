@@ -46,6 +46,8 @@
                             <th class="px-6 py-3 font-medium">Nama Event</th>
                             <th class="px-6 py-3 font-medium">Peserta</th>
                             <th class="px-6 py-3 font-medium">NIM</th>
+                            <th class="px-6 py-3 font-medium">Fakultas</th>
+                            <th class="px-6 py-3 font-medium">Jurusan</th>
                             <th class="px-6 py-3 font-medium">Status</th>
                             <th class="px-6 py-3 font-medium">Tanggal</th>
                             <th class="px-6 py-3 font-medium text-right">Aksi</th>
@@ -64,6 +66,8 @@
                                 <div class="text-stone-500 text-xs">{{ reg.user.email }}</div>
                             </td>
                             <td class="px-6 py-4">{{ reg.detail ? reg.detail.identity_number : '-' }}</td>
+                            <td class="px-6 py-4">{{ reg.detail ? (reg.detail.faculty || '-') : '-' }}</td>
+                            <td class="px-6 py-4">{{ reg.detail ? (reg.detail.major || '-') : '-' }}</td>
                             <td class="px-6 py-4">
                                 <span v-if="reg.status === 'pending'" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">Pending</span>
                                 <span v-else-if="reg.status === 'paid'" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Paid</span>
@@ -78,7 +82,7 @@
                             </td>
                         </tr>
                         <tr v-if="registrations.data.length === 0">
-                            <td colspan="6" class="px-6 py-12 text-center text-stone-500">
+                            <td colspan="9" class="px-6 py-12 text-center text-stone-500">
                                 Tidak ada data pendaftaran yang ditemukan.
                             </td>
                         </tr>

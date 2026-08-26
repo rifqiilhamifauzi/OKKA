@@ -88,6 +88,9 @@ class FinanceController extends Controller
                 'Nomor Identitas',
                 'Nomor Telepon',
                 'Status Pramuka',
+                'Fakultas',
+                'Jurusan',
+                'Ukuran Baju',
                 'Waktu Pendaftaran'
             ], ';');
             
@@ -111,11 +114,14 @@ class FinanceController extends Controller
                     $reg->detail->identity_number ?? '-',
                     $reg->detail->phone ?? '-',
                     $reg->detail && $reg->detail->scout_status ? 'Ya' : 'Tidak',
+                    $reg->detail->faculty ?? '-',
+                    $reg->detail->major ?? '-',
+                    $reg->detail->tshirt_size ?? '-',
                     $reg->created_at->format('d/m/Y H:i:s')
                 ], ';');
             }
             
-            fputcsv($handle, ['', '', '', '', '', 'Total Pendapatan', $grandTotal, '', '', '', '', '', '', ''], ';');
+            fputcsv($handle, ['', '', '', '', '', 'Total Pendapatan', $grandTotal, '', '', '', '', '', '', '', '', '', ''], ';');
 
             fclose($handle);
         });
