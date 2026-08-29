@@ -81,6 +81,12 @@ class RegistrationController extends Controller
             'description' => 'Mengubah status pendaftaran ' . $registration->user->name . ' menjadi ' . $request->status,
         ]);
 
+        if ($request->status === 'paid') {
+            $registration->user->notify(new \App\Notifications\PaymentVerified($registration));
+        } else {
+            $registration->user->notify(new \App\Notifications\RegistrationStatusChanged($request->status, $registration));
+        }
+
         return redirect()->back()->with('success', 'Status pendaftaran berhasil diperbarui.');
     }
 

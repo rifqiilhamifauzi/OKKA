@@ -97,9 +97,11 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useForm, usePage } from '@inertiajs/vue3';
+import { usePushNotifications } from '@/Composables/usePushNotifications';
 
 const isSidebarOpen = ref(false);
 const form = useForm({});
+const { subscribeToPushNotifications } = usePushNotifications();
 
 const logout = () => {
     form.post('/logout');
@@ -114,6 +116,11 @@ const onKeyDown = (e) => {
 
 onMounted(() => {
     document.addEventListener('keydown', onKeyDown);
+    
+    // Attempt to subscribe to push notifications
+    if (Notification.permission !== 'denied') {
+        subscribeToPushNotifications();
+    }
 });
 
 onUnmounted(() => {

@@ -59,6 +59,10 @@ class AnnouncementController extends Controller
             'description' => 'Membuat pengumuman baru: ' . $announcement->title,
         ]);
 
+        if ($announcement->is_published) {
+            \Illuminate\Support\Facades\Notification::send(\App\Models\User::all(), new \App\Notifications\NewAnnouncement($announcement));
+        }
+
         return redirect()->back()->with('success', 'Pengumuman berhasil dibuat.');
     }
 

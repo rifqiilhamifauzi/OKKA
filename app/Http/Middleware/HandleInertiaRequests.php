@@ -40,6 +40,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'vapidPublicKey' => config('webpush.vapid.public_key'),
             'announcements' => function () use ($request) {
                 $user = $request->user();
                 if (!$user || $user->role !== 'user') return [];

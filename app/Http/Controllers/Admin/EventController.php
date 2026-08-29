@@ -71,6 +71,10 @@ class EventController extends Controller
             'description' => 'Mengubah status event "' . $event->name . '" menjadi ' . $request->status,
         ]);
 
+        if ($request->status === 'active') {
+            \Illuminate\Support\Facades\Notification::send(\App\Models\User::all(), new \App\Notifications\NewEvent($event));
+        }
+
         return redirect()->back()->with('success', 'Status event berhasil diperbarui.');
     }
 

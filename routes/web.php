@@ -38,6 +38,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/registration/create', [RegistrationController::class, 'create'])->name('registration.create');
     Route::post('/registration/store', [RegistrationController::class, 'store'])->name('registration.store');
     Route::post('/payment/upload', [RegistrationController::class, 'uploadPayment'])->name('payment.upload');
+
+    // Push notifications
+    Route::post('/push/subscribe', [\App\Http\Controllers\PushController::class, 'subscribe'])->name('push.subscribe');
+    Route::post('/push/unsubscribe', [\App\Http\Controllers\PushController::class, 'unsubscribe'])->name('push.unsubscribe');
 });
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
