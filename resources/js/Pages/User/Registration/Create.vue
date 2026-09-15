@@ -19,7 +19,7 @@
                         <!-- Nama Lengkap -->
                         <div>
                             <label class="block text-sm font-medium text-blue-800">Nama Lengkap</label>
-                            <input type="text" v-model="form.full_name" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            <input type="text" v-model="form.full_name" required class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                             <div v-if="form.errors.full_name" class="text-red-500 text-xs mt-1">{{ form.errors.full_name }}</div>
                         </div>
 
@@ -32,14 +32,14 @@
                         <!-- NIM -->
                         <div>
                             <label class="block text-sm font-medium text-blue-800">NIM / Nomor Induk Mahasiswa</label>
-                            <input type="text" v-model="form.identity_number" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Contoh: 123456789">
+                            <input type="text" v-model="form.identity_number" required class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Contoh: 123456789">
                             <div v-if="form.errors.identity_number" class="text-red-500 text-xs mt-1">{{ form.errors.identity_number }}</div>
                         </div>
 
                         <!-- Jenis Kelamin -->
                         <div>
                             <label class="block text-sm font-medium text-blue-800">Jenis Kelamin</label>
-                            <select v-model="form.gender" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            <select v-model="form.gender" required class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                                 <option value="" disabled>Pilih jenis kelamin</option>
                                 <option value="L">Laki-laki</option>
                                 <option value="P">Perempuan</option>
@@ -51,14 +51,14 @@
                             <!-- Tempat Lahir -->
                             <div>
                                 <label class="block text-sm font-medium text-blue-800">Tempat Lahir</label>
-                                <input type="text" v-model="form.birth_place" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                                <input type="text" v-model="form.birth_place" required class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                                 <div v-if="form.errors.birth_place" class="text-red-500 text-xs mt-1">{{ form.errors.birth_place }}</div>
                             </div>
                             
                             <!-- Tanggal Lahir -->
                             <div>
                                 <label class="block text-sm font-medium text-blue-800">Tanggal Lahir</label>
-                                <input type="date" v-model="form.birth_date" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                                <input type="date" v-model="form.birth_date" required class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                                 <div v-if="form.errors.birth_date" class="text-red-500 text-xs mt-1">{{ form.errors.birth_date }}</div>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                             <!-- Fakultas -->
                             <div>
                                 <label class="block text-sm font-medium text-blue-800">Fakultas</label>
-                                <input type="text" v-model="form.faculty" list="faculty-list" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Ketik atau pilih fakultas...">
+                                <input type="text" v-model="form.faculty" list="faculty-list" required class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Ketik atau pilih fakultas...">
                                 <datalist id="faculty-list">
                                     <option v-for="faculty in faculties" :key="faculty" :value="faculty"></option>
                                 </datalist>
@@ -77,7 +77,7 @@
                             <!-- Jurusan -->
                             <div>
                                 <label class="block text-sm font-medium text-blue-800">Jurusan</label>
-                                <input type="text" v-model="form.major" list="major-list" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Ketik atau pilih jurusan...">
+                                <input type="text" v-model="form.major" list="major-list" required class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Ketik atau pilih jurusan...">
                                 <datalist id="major-list">
                                     <option v-for="major in majors" :key="major" :value="major"></option>
                                 </datalist>
@@ -88,7 +88,7 @@
                         <!-- Ukuran Baju -->
                         <div>
                             <label class="block text-sm font-medium text-blue-800">Ukuran Baju</label>
-                            <select v-model="form.tshirt_size" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            <select v-model="form.tshirt_size" required class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                                 <option value="" disabled>Pilih ukuran baju</option>
                                 <option value="XS">XS</option>
                                 <option value="S">S</option>
@@ -104,7 +104,7 @@
                         <!-- Nomor HP -->
                         <div>
                             <label class="block text-sm font-medium text-blue-800">Nomor HP / WhatsApp</label>
-                            <input type="text" v-model="form.phone" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Contoh: 081234567890">
+                            <input type="text" v-model="form.phone" required class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Contoh: 081234567890">
                             <div v-if="form.errors.phone" class="text-red-500 text-xs mt-1">{{ form.errors.phone }}</div>
                         </div>
 
@@ -113,11 +113,11 @@
                             <label class="block text-sm font-medium text-blue-800 mb-2">Status Pramuka</label>
                             <div class="flex items-center space-x-4">
                                 <label class="inline-flex items-center">
-                                    <input type="radio" v-model="form.scout_status" :value="true" class="text-amber-500 focus:ring-amber-400 border-slate-300">
+                                    <input type="radio" name="scout_status" v-model="form.scout_status" :value="true" required class="text-amber-500 focus:ring-amber-400 border-slate-300">
                                     <span class="ml-2 text-sm text-blue-800">Sudah pernah ikut Pramuka</span>
                                 </label>
                                 <label class="inline-flex items-center">
-                                    <input type="radio" v-model="form.scout_status" :value="false" class="text-amber-500 focus:ring-amber-400 border-slate-300">
+                                    <input type="radio" name="scout_status" v-model="form.scout_status" :value="false" required class="text-amber-500 focus:ring-amber-400 border-slate-300">
                                     <span class="ml-2 text-sm text-blue-800">Belum pernah</span>
                                 </label>
                             </div>
@@ -233,6 +233,12 @@ const form = useForm({
 });
 
 const submit = () => {
+    // Client-side validation to ensure no empty data is sent
+    if (!form.full_name || !form.identity_number || !form.gender || !form.birth_place || !form.birth_date || !form.phone || form.scout_status === null || !form.faculty || !form.major || !form.tshirt_size) {
+        alert("Mohon lengkapi semua data form pendaftaran sebelum mengirim.");
+        return;
+    }
+    
     form.transform((data) => ({
         ...data,
         event_id: props.activeEvent.id,

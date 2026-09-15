@@ -1,10 +1,16 @@
 <template>
     <div class="min-h-screen bg-slate-100 flex overflow-hidden">
         
+        <!-- Mobile Sidebar Overlay -->
+        <div v-if="isMobileMenuOpen" @click="isMobileMenuOpen = false" class="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-20 lg:hidden transition-all duration-300"></div>
+        
         <!-- Left Sidebar -->
-        <aside class="w-64 bg-slate-900 text-white min-h-screen flex-col hidden lg:flex flex-shrink-0 shadow-xl z-30">
-            <div class="p-6 border-b border-slate-800">
+        <aside class="fixed inset-y-0 left-0 z-30 w-64 bg-slate-900 text-white min-h-screen flex flex-col transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 flex-shrink-0 shadow-xl" :class="{'translate-x-0': isMobileMenuOpen, '-translate-x-full': !isMobileMenuOpen}">
+            <div class="p-6 border-b border-slate-800 flex justify-between items-center">
                 <h1 class="text-xl font-bold font-plus-jakarta-sans text-white tracking-wide">Dashboard User</h1>
+                <button @click="isMobileMenuOpen = false" class="text-slate-400 hover:text-white lg:hidden">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
             </div>
             <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
                 <a href="/dashboard" class="group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200" :class="{ 'bg-blue-600 text-white shadow-md': $page.url === '/dashboard', 'text-slate-400 hover:bg-slate-800 hover:text-white': $page.url !== '/dashboard' }">
@@ -16,6 +22,15 @@
                     Registration
                 </a>
             </nav>
+
+            <div class="p-4 border-t border-slate-800 mt-auto">
+                <form @submit.prevent="logout" class="w-full">
+                    <button type="submit" class="w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-red-900/40 to-red-600/10 hover:from-red-600 hover:to-red-500 text-red-400 hover:text-white rounded-xl font-bold transition-all duration-300 border border-red-500/30 hover:border-red-500 shadow-lg shadow-red-900/20 hover:shadow-red-500/40 group">
+                        <svg class="mr-2 h-5 w-5 flex-shrink-0 transition-transform duration-300 group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        Keluar
+                    </button>
+                </form>
+            </div>
         </aside>
 
         <!-- Main Content Wrapper -->
@@ -24,8 +39,11 @@
             <header class="bg-white shadow-sm border-b border-slate-200 relative z-20">
                 <div class="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
                     <div class="flex items-center">
+                        <!-- Mobile Menu Button -->
+                        <button @click="isMobileMenuOpen = true" class="mr-4 text-stone-500 hover:text-blue-600 focus:outline-none lg:hidden">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                        </button>
                         <h1 class="text-xl font-bold text-blue-800 font-plus-jakarta-sans lg:hidden">OKKA</h1>
-                        <!-- Mobile Menu Button (Optional, can be added later if needed) -->
                     </div>
                     <nav class="flex items-center gap-3">
                         <!-- Notification Bell -->
@@ -36,14 +54,6 @@
                                 <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-white"></span>
                             </span>
                         </button>
-                        
-                        <!-- Logout -->
-                        <form @submit.prevent="logout">
-                            <button type="submit" class="text-sm text-red-600 hover:text-white hover:bg-red-600 border border-red-600 px-4 py-2 rounded-lg font-bold transition-all shadow-sm flex items-center gap-2">
-                                <svg class="w-4 h-4 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                                Keluar
-                            </button>
-                        </form>
                     </nav>
                 </div>
             </header>
@@ -100,6 +110,7 @@ import { useForm, usePage } from '@inertiajs/vue3';
 import { usePushNotifications } from '@/Composables/usePushNotifications';
 
 const isSidebarOpen = ref(false);
+const isMobileMenuOpen = ref(false);
 const form = useForm({});
 const { subscribeToPushNotifications } = usePushNotifications();
 

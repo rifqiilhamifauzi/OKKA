@@ -151,7 +151,7 @@
                         <div class="relative flex items-center justify-between">
                             <div class="w-5/12 text-right pr-8">
                                 <h4 class="text-xl font-bold text-stone-900">Pendaftaran Buka</h4>
-                                <p class="text-stone-600">Gelombang 1</p>
+                                <p class="text-stone-600">Gelombang 2</p>
                             </div>
                             <div class="w-10 h-10 bg-amber-500 rounded-full border-4 border-white shadow flex items-center justify-center z-10"></div>
                             <div class="w-5/12 pl-8">
@@ -161,7 +161,7 @@
                         <!-- Item 2 -->
                         <div class="relative flex items-center justify-between">
                             <div class="w-5/12 text-right pr-8">
-                                <span class="inline-block bg-amber-100 text-amber-800 font-bold px-3 py-1 rounded">13 September 2026</span>
+                                <span class="inline-block bg-amber-100 text-amber-800 font-bold px-3 py-1 rounded">1 November 2026</span>
                             </div>
                             <div class="w-10 h-10 bg-amber-500 rounded-full border-4 border-white shadow flex items-center justify-center z-10"></div>
                             <div class="w-5/12 pl-8">
@@ -177,7 +177,7 @@
                             </div>
                             <div class="w-10 h-10 bg-blue-800 rounded-full border-4 border-white shadow flex items-center justify-center z-10"></div>
                             <div class="w-5/12 pl-8">
-                                <span class="inline-block bg-slate-200 text-stone-800 font-bold px-3 py-1 rounded">26-27 September 2026</span>
+                                <span class="inline-block bg-slate-200 text-stone-800 font-bold px-3 py-1 rounded">7-8 November 2026</span>
                             </div>
                         </div>
                     </div>

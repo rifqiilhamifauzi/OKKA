@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-slate-100 flex flex-col md:flex-row relative">
         <!-- Mobile Sidebar Overlay -->
-        <div v-if="isSidebarOpen" @click="isSidebarOpen = false" class="fixed inset-0 bg-stone-900 bg-opacity-50 z-20 md:hidden transition-opacity"></div>
+        <div v-if="isSidebarOpen" @click="isSidebarOpen = false" class="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-20 md:hidden transition-all duration-300"></div>
 
         <!-- Sidebar -->
         <aside class="fixed inset-y-0 left-0 z-30 w-64 bg-blue-950 text-slate-300 transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 flex-shrink-0" :class="{'translate-x-0': isSidebarOpen, '-translate-x-full': !isSidebarOpen}">
@@ -46,6 +46,15 @@
                     <svg class="mr-3 h-5 w-5 flex-shrink-0 transition-colors duration-200" :class="{ 'text-amber-300': $page.url.startsWith('/admin/activity-logs'), 'text-stone-500 group-hover:text-slate-300': !$page.url.startsWith('/admin/activity-logs') }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     Riwayat Update
                 </Link>
+
+                <div class="mt-auto pt-8 pb-4">
+                    <form @submit.prevent="logout" class="w-full">
+                        <button type="submit" class="w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-red-900/40 to-red-600/10 hover:from-red-600 hover:to-red-500 text-red-400 hover:text-white rounded-xl font-bold transition-all duration-300 border border-red-500/30 hover:border-red-500 shadow-lg shadow-red-900/20 hover:shadow-red-500/40 group">
+                            <svg class="mr-2 h-5 w-5 flex-shrink-0 transition-transform duration-300 group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                            Logout
+                        </button>
+                    </form>
+                </div>
             </nav>
         </aside>
 
@@ -59,10 +68,10 @@
                     <h2 class="text-lg font-semibold text-stone-800 hidden sm:block">Admin Area</h2>
                 </div>
                 <div class="flex items-center gap-3 sm:gap-4">
+                    <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center font-bold text-sm uppercase">
+                        {{ $page.props.auth.user.name.substring(0, 2) }}
+                    </div>
                     <span class="text-xs sm:text-sm font-medium text-stone-600 truncate max-w-[120px] sm:max-w-xs">{{ $page.props.auth.user.name }}</span>
-                    <form @submit.prevent="logout">
-                        <button type="submit" class="text-xs sm:text-sm text-red-600 hover:text-red-800 font-medium">Logout</button>
-                    </form>
                 </div>
             </header>
             <div class="flex-1 p-4 sm:p-6 overflow-y-auto">
