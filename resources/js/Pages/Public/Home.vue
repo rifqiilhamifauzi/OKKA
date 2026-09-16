@@ -3,46 +3,69 @@
 
     <PublicLayout>
         <!-- 1. Hero Section -->
-        <section class="relative bg-blue-950 text-white overflow-hidden">
-            <div class="absolute inset-0 z-0">
-                <div class="absolute inset-0 bg-blue-900 mix-blend-multiply opacity-60"></div>
-                <!-- Placeholder for Hero Image -->
-                <div class="w-full h-full bg-blue-900"></div>
-                <div class="absolute inset-0 bg-gradient-to-t from-blue-950 to-transparent"></div>
-            </div>
-            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-24 md:pt-8 md:pb-24 flex flex-col items-center text-center">
-                <!-- Main Logo Image -->
-                <img src="/images/okka-logo.png"
-                        alt="OKKA 2026"
-                            class="w-[280px] mb-8 drop-shadow-2xl hover:scale-105 transition-transform duration-500 object-contain">
-                
-                <!-- Description -->
-                <h2 class="text-xl md:text-2xl text-amber-400 font-bold tracking-widest uppercase mb-4 drop-shadow">
-                    Orientasi Kepramukaan dan Kepemimpinan
-                </h2>
-                <p class="text-lg md:text-xl text-slate-200 max-w-3xl mb-10 font-inter leading-relaxed drop-shadow-md">
-                    Membentuk karakter adaptif, berintegritas, dan berjiwa pemimpin untuk masa depan yang lebih baik.
-                </p>
-                
-                <!-- Call to Actions -->
-                <div class="flex flex-col sm:flex-row gap-4 mt-2">
-                    <a href="/login" class="px-8 py-4 bg-gradient-to-r from-amber-400 to-amber-600 hover:from-amber-300 hover:to-amber-500 text-blue-950 border border-amber-300 font-extrabold rounded-lg shadow-xl shadow-amber-500/20 transition-all transform hover:-translate-y-1 hover:scale-105 text-lg flex items-center justify-center">
-                        Daftar Sekarang
-                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                    </a>
-                    <a href="#about" class="px-8 py-4 bg-blue-950/40 hover:bg-blue-950/60 backdrop-blur-md border border-slate-500/30 text-white font-bold rounded-lg transition text-lg flex items-center justify-center">
-                        Pelajari Lebih Lanjut
-                    </a>
-                </div>
-            </div>
+        <section class="relative bg-[#fafaf9] overflow-hidden pt-12 pb-24 md:pt-16 md:pb-32">
+            <!-- Particle Background -->
+            <ParticleBackground />
             
-            <!-- Journey Line Decorative Element -->
-            <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
-                <svg class="relative block w-full h-12" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                    <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="#f8fafc"></path>
-                    <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="#f8fafc"></path>
-                    <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="#f8fafc"></path>
-                </svg>
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+                    
+                    <!-- Left Column: Content -->
+                    <div class="flex flex-col items-start text-left order-2 lg:order-1">
+                        <!-- Badge -->
+                        <div class="inline-flex items-center px-4 py-2 rounded-full bg-slate-200 text-blue-950 text-xs font-bold mb-6">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 mr-2"></span>
+                            Orientasi Kepramukaan & Kepemimpinan
+                        </div>
+                        
+                        <!-- Title -->
+                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-blue-950 leading-[1.1] mb-6 font-plus-jakarta-sans tracking-tight">
+                            Membangun Masa<br>
+                            Depan Bersama <span class="text-amber-500 relative whitespace-nowrap">OKKA 2026<svg class="absolute -bottom-2 left-0 w-full h-3 text-amber-300 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="4" fill="transparent"/></svg></span>
+                        </h1>
+                        
+                        <!-- Description -->
+                        <p class="text-lg md:text-xl text-slate-600 mb-10 leading-relaxed font-inter max-w-lg">
+                            Membentuk karakter adaptif, berintegritas, dan berjiwa pemimpin untuk masa depan yang lebih baik dalam satu platform cerdas.
+                        </p>
+                        
+                        <!-- Actions -->
+                        <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                            <a href="/login" class="px-8 py-3.5 bg-blue-950 hover:bg-blue-900 text-white font-bold rounded-full shadow-lg transition-all transform hover:-translate-y-1 text-base flex items-center justify-center">
+                                Daftar Sekarang
+                            </a>
+                            <a href="#about" @click.prevent="scrollToAbout" class="px-8 py-3.5 bg-white hover:bg-slate-50 border border-slate-300 text-blue-950 font-bold rounded-full transition-all text-base flex items-center justify-center shadow-sm">
+                                Pelajari Lebih Lanjut
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column: Visual/Video Placeholder -->
+                    <div class="relative w-full max-w-[220px] sm:max-w-xs md:max-w-md mx-auto lg:ml-auto order-1 lg:order-2 mb-6 md:mb-10 lg:mb-0">
+                        <!-- Connecting lines graphic in background -->
+                        <div class="absolute -inset-10 z-0 hidden md:block">
+                            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full opacity-10 text-blue-900">
+                                <path fill="currentColor" d="M44.7,-76.4C58.9,-69.2,71.8,-59.1,81.1,-46.4C90.4,-33.7,96.1,-18.4,96.6,-3C97.1,12.4,92.5,27.8,84,41.2C75.5,54.6,63.1,66.1,49.1,73.5C35.1,80.9,19.5,84.2,4.3,80.9C-10.9,77.6,-25.7,67.7,-40.4,59.3C-55.1,50.9,-69.7,44,-78.9,32.3C-88.1,20.6,-91.9,4.1,-89.2,-11.3C-86.5,-26.7,-77.3,-41,-65.4,-52.1C-53.5,-63.2,-39,-71,-24.8,-75.4C-10.6,-79.8,3.2,-80.8,17.4,-80C31.6,-79.2,45.8,-76.6,44.7,-76.4Z" transform="translate(100 100)" />
+                            </svg>
+                        </div>
+                        
+                        <!-- The Video Bumper Placeholder -->
+                        <div class="relative z-10 w-full aspect-square rounded-[2rem] bg-slate-200 overflow-hidden shadow-2xl border-4 border-white/80 flex items-center justify-center group bg-black">
+                            
+                            <!-- Video Tag -->
+                            <video 
+                                src="/videos/bumper-okka.mp4" 
+                                autoplay 
+                                loop 
+                                muted 
+                                playsinline
+                                class="absolute inset-0 w-full h-full object-cover transform scale-[1.15]">
+                            </video>
+                            
+                        </div>
+                    </div>
+                    
+                </div>
             </div>
         </section>
 
@@ -273,4 +296,12 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
+import ParticleBackground from '@/Components/ParticleBackground.vue';
+
+const scrollToAbout = () => {
+    const el = document.getElementById('about');
+    if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+    }
+};
 </script>

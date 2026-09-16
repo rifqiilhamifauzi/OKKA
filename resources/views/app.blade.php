@@ -5,6 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title inertia>{{ config('app.name', 'OKKA') }}</title>
+        
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="/images/okka-logo.png">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
