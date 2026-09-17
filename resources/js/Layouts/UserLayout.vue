@@ -1,11 +1,11 @@
 <template>
-    <div class="min-h-screen bg-slate-100 flex overflow-hidden">
+    <div class="h-screen app-viewport bg-slate-100 flex overflow-hidden">
         
         <!-- Mobile Sidebar Overlay -->
         <div v-if="isMobileMenuOpen" @click="isMobileMenuOpen = false" class="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-20 lg:hidden transition-all duration-300"></div>
         
         <!-- Left Sidebar -->
-        <aside class="fixed inset-y-0 left-0 z-30 w-64 bg-slate-900 text-white min-h-screen flex flex-col transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 flex-shrink-0 shadow-xl" :class="{'translate-x-0': isMobileMenuOpen, '-translate-x-full': !isMobileMenuOpen}">
+        <aside class="fixed inset-y-0 left-0 z-30 w-64 bg-slate-900 text-white flex flex-col transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 flex-shrink-0 shadow-xl" :class="{'translate-x-0': isMobileMenuOpen, '-translate-x-full': !isMobileMenuOpen}">
             <div class="p-6 border-b border-slate-800 flex justify-between items-center">
                 <h1 class="text-xl font-bold font-plus-jakarta-sans text-white tracking-wide">Dashboard User</h1>
                 <button @click="isMobileMenuOpen = false" class="text-slate-400 hover:text-white lg:hidden">
@@ -34,7 +34,7 @@
         </aside>
 
         <!-- Main Content Wrapper -->
-        <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden relative z-10">
+        <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden relative z-10">
             <!-- Top Header -->
             <header class="bg-white shadow-sm border-b border-slate-200 relative z-20">
                 <div class="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
@@ -140,6 +140,10 @@ onUnmounted(() => {
 </script>
 
 <style>
+.app-viewport {
+    height: 100vh; /* Fallback for browsers that do not support dvh */
+    height: 100dvh;
+}
 @keyframes slideInRight {
     from {
         transform: translateX(100%);
