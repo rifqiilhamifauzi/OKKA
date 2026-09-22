@@ -65,16 +65,39 @@
                             </td>
                             <td class="px-6 py-4">{{ reg.detail ? reg.detail.identity_number : '-' }}</td>
                             <td class="px-6 py-4">
-                                <span v-if="reg.status === 'pending'" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">Pending</span>
-                                <span v-else-if="reg.status === 'paid'" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Paid</span>
-                                <span v-else-if="reg.status === 'approved'" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">Approved</span>
-                                <span v-else-if="reg.status === 'rejected'" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Rejected</span>
-                                <span v-else class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-stone-800">{{ reg.status }}</span>
+                                <div class="relative inline-block w-32">
+                                    <select 
+                                        :value="reg.status" 
+                                        @change="updateStatus(reg.id, $event.target.value)"
+                                        class="block w-full appearance-none border py-1.5 px-3 pr-8 rounded-lg text-xs font-semibold leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors cursor-pointer shadow-sm"
+                                        :class="{
+                                            'bg-amber-50 text-amber-800 border-amber-200 focus:border-amber-500 focus:ring-amber-500': reg.status === 'pending',
+                                            'bg-blue-50 text-blue-800 border-blue-200 focus:border-blue-500 focus:ring-blue-500': reg.status === 'paid',
+                                            'bg-emerald-50 text-emerald-800 border-emerald-200 focus:border-emerald-500 focus:ring-emerald-500': reg.status === 'approved',
+                                            'bg-red-50 text-red-800 border-red-200 focus:border-red-500 focus:ring-red-500': reg.status === 'rejected',
+                                            'bg-white text-stone-700 border-slate-200 focus:border-blue-500 focus:ring-blue-500': !['pending', 'paid', 'approved', 'rejected'].includes(reg.status)
+                                        }"
+                                    >
+                                        <option value="pending" class="bg-amber-50 text-amber-800 font-medium">Pending</option>
+                                        <option value="paid" class="bg-blue-50 text-blue-800 font-medium">Paid</option>
+                                        <option value="approved" class="bg-emerald-50 text-emerald-800 font-medium">Approved</option>
+                                        <option value="rejected" class="bg-red-50 text-red-800 font-medium">Rejected</option>
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-stone-500" :class="{
+                                        'text-amber-800': reg.status === 'pending',
+                                        'text-blue-800': reg.status === 'paid',
+                                        'text-emerald-800': reg.status === 'approved',
+                                        'text-red-800': reg.status === 'rejected'
+                                    }">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                    </div>
+                                </div>
                             </td>
                             <td class="px-6 py-4 text-stone-500">{{ new Date(reg.created_at).toLocaleDateString('id-ID') }}</td>
-                            <td class="px-6 py-4 text-right flex justify-end gap-2">
-                                <a :href="`/admin/registrations/${reg.id}`" class="text-amber-600 hover:text-stone-800 font-medium bg-amber-50 px-3 py-1 rounded border border-amber-100">Detail</a>
-                                <button @click="deleteRegistration(reg.id)" class="text-red-600 hover:text-white font-medium bg-red-50 hover:bg-red-600 px-3 py-1 rounded border border-red-100 transition-colors">Hapus</button>
+                            <td class="px-6 py-4 text-right flex justify-end gap-2 items-center">
+                                <button @click="openProofModal(reg.payment_proof)" class="text-indigo-600 hover:text-white font-medium bg-indigo-50 hover:bg-indigo-600 px-3 py-1.5 rounded border border-indigo-100 transition-colors">Lihat Bukti</button>
+                                <a :href="`/admin/registrations/${reg.id}`" class="text-amber-600 hover:text-stone-800 font-medium bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded border border-amber-100 transition-colors">Detail</a>
+                                <button @click="deleteRegistration(reg.id)" class="text-red-600 hover:text-white font-medium bg-red-50 hover:bg-red-600 px-3 py-1.5 rounded border border-red-100 transition-colors">Hapus</button>
                             </td>
                         </tr>
                         <tr v-if="registrations.data.length === 0">
@@ -99,12 +122,31 @@
                 </div>
             </div>
         </div>
+
+        <!-- Proof Modal -->
+        <div v-if="showProofModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm" @click.self="closeProofModal">
+            <div class="bg-white rounded-2xl shadow-xl max-w-2xl w-full overflow-hidden flex flex-col max-h-[90vh]">
+                <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                    <h3 class="font-bold text-stone-800 text-lg">Bukti Pembayaran</h3>
+                    <button @click="closeProofModal" class="text-stone-400 hover:text-red-500 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <div class="p-6 overflow-y-auto flex-1 flex justify-center items-center bg-slate-100">
+                    <img v-if="selectedProofUrl" :src="selectedProofUrl" alt="Bukti Pembayaran" class="max-w-full max-h-[70vh] object-contain rounded shadow-sm border border-slate-200">
+                    <div v-else class="text-stone-500 italic">Bukti pembayaran tidak tersedia.</div>
+                </div>
+                <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end">
+                    <button @click="closeProofModal" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-300 transition-colors">Tutup</button>
+                </div>
+            </div>
+        </div>
     </AdminLayout>
 </template>
 
 <script setup>
 import { Head, router } from '@inertiajs/vue3';
-import { reactive, watch } from 'vue';
+import { reactive, watch, ref } from 'vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 
 import { onMounted, onUnmounted } from 'vue';
@@ -165,5 +207,32 @@ const deleteRegistration = (id) => {
             }
         });
     }
+};
+
+const updateStatus = (id, newStatus) => {
+    if (confirm(`Apakah Anda yakin ingin mengubah status pendaftar ini menjadi ${newStatus.toUpperCase()}?`)) {
+        router.patch(`/admin/registrations/${id}/status`, {
+            status: newStatus
+        }, {
+            preserveScroll: true,
+        });
+    }
+};
+
+const showProofModal = ref(false);
+const selectedProofUrl = ref(null);
+
+const openProofModal = (proofPath) => {
+    if (proofPath) {
+        selectedProofUrl.value = `/storage/${proofPath}`;
+        showProofModal.value = true;
+    } else {
+        alert('Bukti pembayaran belum diunggah untuk pendaftar ini.');
+    }
+};
+
+const closeProofModal = () => {
+    showProofModal.value = false;
+    selectedProofUrl.value = null;
 };
 </script>

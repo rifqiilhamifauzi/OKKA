@@ -19,8 +19,17 @@ class DashboardController extends Controller
         $userRegistrations = Registration::with('detail')->where('user_id', $user->id)->get();
         $registeredEventIds = $userRegistrations->pluck('event_id');
 
-        // Fetch ALL active events that are either still open OR the user has already registered
-        $activeEvents = Event::where('status', 'active')
+        // Fetch ALL active events (and coming_soon that are starting today so they auto-activate)
+        $activeEvents = Event::where(function($query) {
+                $query->where(function($q) {
+                          $q->where('status', 'active')
+                            ->whereDate('end_date', '>=', now()->toDateString());
+                      })
+                      ->orWhere(function($q) {
+                          $q->where('status', 'coming_soon')
+                            ->whereDate('start_date', '<=', now()->toDateString());
+                      });
+            })
             ->where(function($query) use ($registeredEventIds) {
                 $query->whereDate('end_date', '>=', now()->toDateString())
                       ->orWhereIn('id', $registeredEventIds);

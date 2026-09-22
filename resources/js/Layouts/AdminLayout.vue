@@ -21,7 +21,8 @@
                     <svg class="mr-3 h-5 w-5 flex-shrink-0 transition-colors duration-200" :class="{ 'text-amber-300': $page.url.startsWith('/admin/events'), 'text-stone-500 group-hover:text-slate-300': !$page.url.startsWith('/admin/events') }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     Data Event
                 </Link>
-                
+
+
                 <Link href="/admin/registrations" @click="isSidebarOpen = false" class="group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200" :class="{ 'bg-blue-900 text-white shadow-md': $page.url.startsWith('/admin/registrations'), 'text-stone-400 hover:bg-blue-900 hover:text-white': !$page.url.startsWith('/admin/registrations') }">
                     <svg class="mr-3 h-5 w-5 flex-shrink-0 transition-colors duration-200" :class="{ 'text-amber-300': $page.url.startsWith('/admin/registrations'), 'text-stone-500 group-hover:text-slate-300': !$page.url.startsWith('/admin/registrations') }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                     Data Pendaftar

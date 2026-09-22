@@ -48,12 +48,35 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        // Chart Data Aggregation
+        $monthlyTrends = $allRegistrations->groupBy(function($reg) {
+            return $reg->created_at->format('M Y');
+        })->map->count();
+
+        $genderStats = $allRegistrations->filter(fn($reg) => $reg->detail)->groupBy(function($reg) {
+            return $reg->detail->gender === 'L' ? 'Laki-Laki' : 'Perempuan';
+        })->map->count();
+
+        $facultyStats = $allRegistrations->filter(fn($reg) => $reg->detail && $reg->detail->faculty)->groupBy(function($reg) {
+            return $reg->detail->faculty;
+        })->map->count();
+
+        $majorStats = $allRegistrations->filter(fn($reg) => $reg->detail && $reg->detail->major)->groupBy(function($reg) {
+            return $reg->detail->major;
+        })->map->count();
+
         return Inertia::render('Admin/Dashboard', [
             'events' => $events,
             'activeEvent' => $activeEvent,
             'metrics' => $metrics,
             'recentRegistrations' => $recentRegistrations,
             'filters' => ['event_id' => $eventId ?? 'all'],
+            'chartData' => [
+                'trends' => $monthlyTrends,
+                'gender' => $genderStats,
+                'faculty' => $facultyStats,
+                'major' => $majorStats,
+            ]
         ]);
     }
 }

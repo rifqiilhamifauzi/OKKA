@@ -45,7 +45,7 @@ class EventController extends Controller
             'registration_fee' => $request->price,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
-            'status' => 'draft', // By default draft
+            'status' => \Carbon\Carbon::parse($request->start_date)->startOfDay()->isFuture() ? 'coming_soon' : 'active',
         ]);
 
         \App\Models\ActivityLog::create([
@@ -60,7 +60,7 @@ class EventController extends Controller
     public function updateStatus(Request $request, Event $event)
     {
         $request->validate([
-            'status' => 'required|in:draft,active,completed'
+            'status' => 'required|in:coming_soon,active,completed'
         ]);
 
         $event->update(['status' => $request->status]);
@@ -99,6 +99,19 @@ class EventController extends Controller
             }
         }
 
+        $status = $event->status;
+        if ($status === 'completed' && !\Carbon\Carbon::parse($request->end_date)->endOfDay()->isPast()) {
+            $status = 'active';
+        }
+        
+        if ($status === 'active' || $status === 'coming_soon') {
+            if (\Carbon\Carbon::parse($request->start_date)->startOfDay()->isFuture()) {
+                $status = 'coming_soon';
+            } else {
+                $status = 'active';
+            }
+        }
+
         $event->update([
             'name' => $request->name,
             'slug' => $slug,
@@ -106,6 +119,7 @@ class EventController extends Controller
             'registration_fee' => $request->price,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
+            'status' => $status,
         ]);
 
         \App\Models\ActivityLog::create([

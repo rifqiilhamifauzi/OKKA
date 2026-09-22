@@ -32,7 +32,7 @@
                         <!-- NIM -->
                         <div>
                             <label class="block text-sm font-medium text-blue-800">NIM / Nomor Induk Mahasiswa</label>
-                            <input type="text" v-model="form.identity_number" required class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Contoh: 123456789">
+                            <input type="text" inputmode="numeric" pattern="[0-9]*" @input="form.identity_number = $event.target.value.replace(/\D/g, '')" v-model="form.identity_number" required class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Contoh: 123456789">
                             <div v-if="form.errors.identity_number" class="text-red-500 text-xs mt-1">{{ form.errors.identity_number }}</div>
                         </div>
 
@@ -104,7 +104,7 @@
                         <!-- Nomor HP -->
                         <div>
                             <label class="block text-sm font-medium text-blue-800">Nomor HP / WhatsApp</label>
-                            <input type="text" v-model="form.phone" required class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Contoh: 081234567890">
+                            <input type="text" inputmode="numeric" pattern="[0-9]*" @input="form.phone = $event.target.value.replace(/\D/g, '')" v-model="form.phone" required class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Contoh: 081234567890">
                             <div v-if="form.errors.phone" class="text-red-500 text-xs mt-1">{{ form.errors.phone }}</div>
                         </div>
 

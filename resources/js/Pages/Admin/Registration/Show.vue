@@ -19,21 +19,8 @@
                 </div>
             </div>
 
-            <!-- Action Buttons for Status -->
+            <!-- Action Buttons for Status (Dipindah ke halaman Approval) -->
             <div class="flex flex-col sm:flex-row gap-3">
-                <span class="text-xs font-bold text-stone-400 uppercase tracking-widest sm:hidden mb-1">Ubah Status:</span>
-                <button @click="updateStatus('pending')" :class="registration.status === 'pending' ? 'bg-amber-500 text-white shadow-md shadow-amber-500/20' : 'bg-white text-stone-600 border border-slate-200 hover:bg-slate-50'" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all">
-                    Pending
-                </button>
-                <button @click="updateStatus('paid')" :class="registration.status === 'paid' ? 'bg-blue-500 text-white shadow-md shadow-blue-500/20' : 'bg-white text-stone-600 border border-slate-200 hover:bg-slate-50'" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all">
-                    Paid
-                </button>
-                <button @click="updateStatus('approved')" :class="registration.status === 'approved' ? 'bg-amber-500-blue-950 shadow-md shadow-amber-500/20' : 'bg-white text-stone-600 border border-slate-200 hover:bg-slate-50'" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all">
-                    Approve
-                </button>
-                <button @click="updateStatus('rejected')" :class="registration.status === 'rejected' ? 'bg-red-500 text-white shadow-md shadow-red-500/20' : 'bg-white text-stone-600 border border-slate-200 hover:bg-slate-50'" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all">
-                    Reject
-                </button>
             </div>
         </div>
 

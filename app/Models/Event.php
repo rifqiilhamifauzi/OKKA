@@ -26,4 +26,30 @@ class Event extends Model
     {
         return $this->hasMany(Registration::class);
     }
+
+    protected static function booted()
+    {
+        static::retrieved(function ($event) {
+            $changed = false;
+            
+            if ($event->status === 'coming_soon' && $event->start_date && !$event->start_date->startOfDay()->isFuture()) {
+                $event->status = 'active';
+                $changed = true;
+            }
+            
+            if ($event->status === 'active' && $event->start_date && $event->start_date->startOfDay()->isFuture()) {
+                $event->status = 'coming_soon';
+                $changed = true;
+            }
+            
+            if ($event->status === 'active' && $event->end_date && $event->end_date->endOfDay()->isPast()) {
+                $event->status = 'completed';
+                $changed = true;
+            }
+
+            if ($changed) {
+                $event->saveQuietly();
+            }
+        });
+    }
 }

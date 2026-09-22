@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     
     // User routes
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
+    Route::get('/user/history', [\App\Http\Controllers\User\EventHistoryController::class, 'index'])->name('user.history');
     
     Route::get('/registration/create', [RegistrationController::class, 'create'])->name('registration.create');
     Route::post('/registration/store', [RegistrationController::class, 'store'])->name('registration.store');
@@ -60,6 +61,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     
     // Registrations
+    Route::get('/approvals', [AdminRegistrationController::class, 'approvals'])->name('approvals.index');
     Route::get('/registrations', [AdminRegistrationController::class, 'index'])->name('registrations.index');
     Route::get('/registrations/{id}', [AdminRegistrationController::class, 'show'])->name('registrations.show');
     Route::patch('/registrations/{id}/status', [AdminRegistrationController::class, 'updateStatus'])->name('registrations.update-status');

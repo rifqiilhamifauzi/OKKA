@@ -59,11 +59,11 @@
                                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
                                             Aktif
                                         </span>
-                                        <span v-else-if="event.status === 'completed'" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
-                                            Selesai
+                                        <span v-else-if="event.status === 'coming_soon'" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-800">
+                                            Coming Soon
                                         </span>
-                                        <span v-else class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-stone-800">
-                                            Draft
+                                        <span v-else class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+                                            Selesai
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 text-right">
@@ -74,15 +74,13 @@
                                             <button @click="deleteEvent(event.id)" class="text-xs text-red-600 hover:text-red-800 font-medium px-2 py-1 bg-red-50 hover:bg-red-100 rounded transition">
                                                 Hapus
                                             </button>
-                                            <button v-if="event.status === 'draft' || event.status === 'completed'" @click="updateStatus(event.id, 'active')" class="text-xs text-amber-500 hover:text-blue-800 font-medium px-2 py-1 bg-amber-50 hover:bg-amber-50 rounded transition">
+                                            <button v-if="event.status === 'completed'" @click="openEditModal(event)" class="text-xs text-amber-500 hover:text-blue-800 font-medium px-2 py-1 bg-amber-50 hover:bg-amber-100 rounded transition">
                                                 Aktifkan
                                             </button>
                                             <button v-if="event.status === 'active'" @click="updateStatus(event.id, 'completed')" class="text-xs text-blue-600 hover:text-blue-800 font-medium px-2 py-1 bg-blue-50 hover:bg-blue-100 rounded transition">
                                                 Selesaikan
                                             </button>
-                                            <button v-if="event.status === 'active'" @click="updateStatus(event.id, 'draft')" class="text-xs text-stone-600 hover:text-stone-800 font-medium px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded transition">
-                                                Jadikan Draft
-                                            </button>
+
                                         </div>
                                     </td>
                                 </tr>
