@@ -7,6 +7,10 @@
 .phpunit.result.cache
 /.codex
 /.cursor/
+/.agents/
+skills-lock.json
+/.claude/
+/.gemini/
 /.idea
 /.nova
 /.phpunit.cache

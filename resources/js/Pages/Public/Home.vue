@@ -184,7 +184,7 @@
                         <!-- Item 2 -->
                         <div class="relative flex items-center justify-between">
                             <div class="w-5/12 text-right pr-8">
-                                <span class="inline-block bg-amber-100 text-amber-800 font-bold px-3 py-1 rounded">1 November 2026</span>
+                                <span class="inline-block bg-amber-100 text-amber-800 font-bold px-3 py-1 rounded">22 Oktober 2026</span>
                             </div>
                             <div class="w-10 h-10 bg-amber-500 rounded-full border-4 border-white shadow flex items-center justify-center z-10"></div>
                             <div class="w-5/12 pl-8">
@@ -200,7 +200,7 @@
                             </div>
                             <div class="w-10 h-10 bg-blue-800 rounded-full border-4 border-white shadow flex items-center justify-center z-10"></div>
                             <div class="w-5/12 pl-8">
-                                <span class="inline-block bg-slate-200 text-stone-800 font-bold px-3 py-1 rounded">7-8 November 2026</span>
+                                <span class="inline-block bg-slate-200 text-stone-800 font-bold px-3 py-1 rounded">30-31 Oktober 2026</span>
                             </div>
                         </div>
                     </div>
